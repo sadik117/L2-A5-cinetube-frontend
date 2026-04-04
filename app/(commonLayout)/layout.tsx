@@ -1,4 +1,5 @@
 import Footer from "@/components/layouts/Footer";
+import HeroSection from "@/components/layouts/HeroSection";
 import Navbar from "@/components/layouts/Navbar";
 
 
@@ -10,8 +11,8 @@ export default function CommonLayout({
   return (
     <div>
 
-      <main className="min-h-screen pt-12"></main>
       <Navbar></Navbar>
+      <HeroSection></HeroSection>
       {children}
       <Footer></Footer>
 
