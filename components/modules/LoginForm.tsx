@@ -187,7 +187,7 @@ export default function LoginForm() {
       {/* Sign Up Link */}
       <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-6">
         Don&apos;t have an account?{" "}
-        <Link href="/auth/register" className="text-red-500 hover:text-red-600 font-semibold transition-colors inline-flex items-center gap-1 group">
+        <Link href="/register" className="text-red-500 hover:text-red-600 font-semibold transition-colors inline-flex items-center gap-1 group">
           Sign up
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>

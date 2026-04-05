@@ -125,7 +125,7 @@ export default function Footer() {
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
           {/* Top Section with Logo and Description */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
             {/* Brand Column */}
             <div className="lg:col-span-1">
               <Link href="/" className="flex items-center space-x-2 group mb-4">
@@ -136,7 +136,7 @@ export default function Footer() {
                   </div>
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
-                  CineRate
+                  CineTube
                 </span>
               </Link>
               <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
@@ -256,33 +256,6 @@ export default function Footer() {
                   </span>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Newsletter Section */}
-          <div className="border-t border-gray-200 dark:border-gray-800 pt-8 mb-8">
-            <div className="max-w-2xl mx-auto text-center">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                Subscribe to Our Newsletter
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                Get the latest movie reviews, ratings, and exclusive content
-                delivered to your inbox.
-              </p>
-              <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-2 text-sm font-medium bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-105"
-                >
-                  Subscribe
-                </button>
-              </form>
             </div>
           </div>
 

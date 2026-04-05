@@ -7,6 +7,14 @@ export interface User {
   image?: string;
 }
 
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  refetchUser: () => Promise<void>;
+  login: (userData: User) => void;
+  logout: () => void;
+}
+
 export interface NavbarProps {
   user?: User | null;
   onLogout?: () => void;

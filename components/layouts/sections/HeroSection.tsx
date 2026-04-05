@@ -121,7 +121,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen min-h-150 sm:min-h-150 w-full -mb-36 md:-mb-18 mt-0 md:mt-5  overflow-hidden bg-linear-to-b from-gray-900 to-black">
+    <section className="relative h-screen min-h-150 sm:min-h-150 w-full -mb-36 md:-mb-18 overflow-hidden bg-linear-to-b from-gray-900 to-black">
       {/* Background Image Carousel  */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "sonner";
 import { Providers } from "@/components/providers/query-provider";
+import { AuthProvider } from "@/components/providers/auth-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CineTube",
-  description: "A movie streaming platform.",
+  description: "Rate, Review & Watch Movies & Series",
 };
 
 export default function RootLayout({
@@ -26,22 +27,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en" suppressHydrationWarning
+    <html 
+      lang="en" 
+      suppressHydrationWarning   // Keep this
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <Providers>
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem = {false}
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-          <Toaster richColors></Toaster>
+      <body className="min-h-full flex flex-col bg-white dark:bg-gray-950">
+        <AuthProvider>
+          <Providers>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem    
+            >
+              {children}
+            </ThemeProvider>
+            <Toaster richColors position="top-center" />
           </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

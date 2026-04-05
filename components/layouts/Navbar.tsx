@@ -1,375 +1,303 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { 
-  Menu, 
-  X, 
-  Search, 
-  User, 
-  LogOut, 
-  Settings, 
-  Film, 
-  Tv, 
-  Star, 
-  List, 
-  CreditCard,
+import { useState, useEffect, useCallback, memo } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+import {
+  Menu,
+  X,
+  Search,
+  LogOut,
+  Film,
+  Tv,
   Home,
-  TrendingUp,
-  PlusSquare,
-  ShieldCheck,
+  LayoutDashboard,
   Sun,
   Moon,
-  Laptop,
-  LayoutDashboard
-} from 'lucide-react';
-import { NavbarProps } from '@/lib/types/types';
+  ChevronDown,
+  LucideCreditCard,
+  ClipboardListIcon,
+} from "lucide-react";
 import { useTheme } from "next-themes";
+import { useAuth } from "@/components/providers/auth-provider";
+import { toast } from "sonner";
+import { api } from "@/lib/axios";
 
-export default function Navbar({ user, onLogout }: NavbarProps) {
+const NavLink = memo(({ href, label, icon: Icon, isActive }: any) => (
+  <Link
+    href={href}
+    className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
+      isActive
+        ? "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10"
+        : "text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-gray-100 dark:hover:bg-white/10"
+    }`}
+  >
+    <Icon className="w-4 h-4" />
+    <span>{label}</span>
+    {isActive && (
+      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500 to-purple-600" />
+    )}
+  </Link>
+));
+NavLink.displayName = "NavLink";
+
+export default function Navbar() {
+  const { user, loading, refetchUser } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
-  
+
   const router = useRouter();
-  const pathName = usePathname();
-  const userMenuRef = useRef<HTMLDivElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const themeMenuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const { resolvedTheme, setTheme } = useTheme();
 
-  // 2. Use the library's hook instead of local state
-  const { theme, setTheme, resolvedTheme } = useTheme();
-
-  // 3. Handle mounting once to avoid hydration mismatch
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
-  
-  // 4. Update your change handler to use the library's setTheme
-  const handleThemeChange = (newTheme: string) => {
-    setTheme(newTheme);
-    setIsThemeMenuOpen(false);
-  };
-
-  // 5. Update the icon logic to use 'resolvedTheme' 
-  // (This ensures the icon is correct even when theme is set to 'system')
-  const getThemeIcon = () => {
-    if (!mounted) return <Laptop className="w-4 h-4" />;
-    const current = theme === 'system' ? resolvedTheme : theme;
-    return current === 'light' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />;
-  };
-
-  // Handle scroll effect for navbar background
+  // Scroll handler
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close menus when clicking outside
+  //  Auto-refresh user data when route changes
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
-        setIsUserMenuOpen(false);
-      }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+    const refreshUserData = async () => {
+      await refetchUser();
+    };
+    refreshUserData();
+  }, [pathname, refetchUser]); // Refetch when route changes
+
+  //  Listen for custom events for auth state changes
+  useEffect(() => {
+    const handleAuthChange = () => {
+      refetchUser();
+    };
+
+    window.addEventListener("authChange", handleAuthChange);
+    return () => window.removeEventListener("authChange", handleAuthChange);
+  }, [refetchUser]);
+
+  const handleSearch = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        setSearchQuery("");
+        setIsSearchOpen(false);
         setIsMobileMenuOpen(false);
       }
-      if (themeMenuRef.current && !themeMenuRef.current.contains(event.target as Node)) {
-        setIsThemeMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    },
+    [searchQuery, router],
+  );
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery('');
+  const handleLogout = useCallback(async () => {
+    try {
+      // Call backend logout
+      await api.post("/auth/logout", {});
+
+      // Refresh auth context (clears user)
+      await refetchUser();
+
+      // Show success toast
+      toast.success("Logged out successfully", {
+        description: "See you again soon!",
+        duration: 3000,
+      });
+
+      // Close menus
+      setIsUserMenuOpen(false);
       setIsMobileMenuOpen(false);
+
+      // Redirect to home
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Fallback: still clear user and redirect
+      await refetchUser();
+      toast.error("Logged out");
+      router.push("/");
     }
-  };
+  }, [refetchUser, router]);
 
-  // Navigation links for regular users
-  const userNavLinks = [
-    { href: '/', label: 'Home', icon: Home },
-    { href: '/movies', label: 'Movies', icon: Film },
-    { href: '/series', label: 'TV Series', icon: Tv },
-    { href: '/top-rated', label: 'Top Rated', icon: Star },
-  ];
+  const isAdmin = user?.role === "ADMIN";
 
-  // Navigation links for admin users
-  const adminNavLinks = [
-    { href: '/', label: 'Home', icon: Home },
-    { href: '/movies', label: 'Movies', icon: Film },
-    { href: '/series', label: 'TV Series', icon: Tv },
-    { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  ];
-
-  // Get current navigation links based on user role
-  const getNavLinks = () => {
-    if (user?.role === 'ADMIN') {
-      return adminNavLinks;
-    }
-    return userNavLinks;
-  };
-
-  const adminMenuLinks = [
-    { href: '/admin/media', label: 'Manage Media', icon: PlusSquare },
-    { href: '/admin/reviews', label: 'Moderate Reviews', icon: ShieldCheck },
-    { href: '/admin/analytics', label: 'Analytics', icon: TrendingUp },
-  ];
-
-  // Don't render theme-dependent content until mounted to avoid hydration mismatch
-  if (!mounted) {
-    return null;
-  }
+  const navLinks = isAdmin
+    ? [
+        { href: "/", label: "Home", icon: Home },
+        { href: "/movies", label: "Movies", icon: Film },
+        { href: "/series", label: "TV Series", icon: Tv },
+        { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      ]
+    : [
+        { href: "/", label: "Home", icon: Home },
+        { href: "/movies", label: "Movies", icon: Film },
+        { href: "/series", label: "TV Series", icon: Tv },
+        { href: "/watchlist", label: "Watchlist", icon: ClipboardListIcon },
+        {
+          href: "/subscription",
+          label: "Subscription",
+          icon: LucideCreditCard,
+        },
+      ];
 
   return (
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 dark:bg-gradient-to-r dark:from-gray-900/95 dark:to-gray-800/95 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-700'
-            : 'bg-white dark:bg-gradient-to-r dark:from-gray-900 dark:to-gray-800 shadow-md'
+            ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-800"
+            : "bg-white dark:bg-gray-900 shadow-md border-b border-gray-100 dark:border-gray-800"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            
-            {/* Logo / Brand */}
-            <Link href={user?.role === 'ADMIN' ? '/admin/dashboard' : '/'} className="flex items-center space-x-2 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
-                <div className="relative bg-gradient-to-r from-red-500 to-purple-600 rounded-lg p-1.5">
-                  <Film className="w-5 h-5 text-white" />
-                </div>
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="bg-gradient-to-r from-red-500 to-purple-600 p-1.5 rounded-lg">
+                <Film className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
-                CineTube
-              </span>
+              <div>
+                <span className="text-xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
+                  CineTube
+                </span>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 -mt-1">
+                  Rate & Review
+                </p>
+              </div>
             </Link>
 
-            {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-1">
-              {getNavLinks().map((link) => {
-                const Icon = link.icon;
-                const isActive = pathName === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-1.5 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-red-500/20 to-purple-500/20 text-red-600 dark:text-red-400'
-                        : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{link.label}</span>
-                  </Link>
-                );
-              })}
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-1">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.href}
+                  href={link.href}
+                  label={link.label}
+                  icon={link.icon}
+                  isActive={pathname === link.href}
+                />
+              ))}
             </div>
 
             {/* Desktop Right Section */}
-            <div className="hidden md:flex items-center space-x-4">
-              {/* Search Bar - Hide for admin users on desktop */}
-              {user?.role !== 'ADMIN' && (
-                <form onSubmit={handleSearch} className="relative">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search movies, series..."
-                    className="w-64 pl-10 pr-4 py-1.5 text-sm bg-gray-100 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 rounded-full focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all"
-                  />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                </form>
+            <div className="hidden md:flex items-center gap-4">
+              {/* Search */}
+              {!isAdmin && (
+                <div className="relative">
+                  {isSearchOpen ? (
+                    <form onSubmit={handleSearch} className="relative w-72">
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search movies & series..."
+                        className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                        autoFocus
+                      />
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <button
+                        type="button"
+                        onClick={() => setIsSearchOpen(false)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </form>
+                  ) : (
+                    <button
+                      onClick={() => setIsSearchOpen(true)}
+                      className="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                    >
+                      <Search className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               )}
 
-              {/* Theme Toggle Button */}
-              <div className="relative" ref={themeMenuRef}>
-                <button
-                  onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-                  className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200"
-                  aria-label="Toggle theme"
-                >
-                  {getThemeIcon()}
-                </button>
-
-                {isThemeMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-fadeIn">
-                    <button
-                      onClick={() => handleThemeChange('light')}
-                      className={`w-full flex items-center space-x-3 px-4 py-2 text-sm transition ${
-                        theme === 'light'
-                          ? 'bg-gradient-to-r from-red-500/10 to-purple-500/10 text-red-600 dark:text-red-400'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10'
-                      }`}
-                    >
-                      <Sun className="w-4 h-4" />
-                      <span>Light</span>
-                      {theme === 'light' && (
-                        <span className="ml-auto text-xs">✓</span>
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleThemeChange('dark')}
-                      className={`w-full flex items-center space-x-3 px-4 py-2 text-sm transition ${
-                        theme === 'dark'
-                          ? 'bg-gradient-to-r from-red-500/10 to-purple-500/10 text-red-600 dark:text-red-400'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10'
-                      }`}
-                    >
-                      <Moon className="w-4 h-4" />
-                      <span>Dark</span>
-                      {theme === 'dark' && (
-                        <span className="ml-auto text-xs">✓</span>
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleThemeChange('system')}
-                      className={`w-full flex items-center space-x-3 px-4 py-2 text-sm transition ${
-                        theme === 'system'
-                          ? 'bg-gradient-to-r from-red-500/10 to-purple-500/10 text-red-600 dark:text-red-400'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10'
-                      }`}
-                    >
-                      <Laptop className="w-4 h-4" />
-                      <span>System</span>
-                      {theme === 'system' && (
-                        <span className="ml-auto text-xs">✓</span>
-                      )}
-                    </button>
-                  </div>
+              {/* Safe Theme Toggle with mounted check */}
+              <button
+                onClick={() =>
+                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                }
+                className="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                aria-label="Toggle theme"
+              >
+                {!mounted ? (
+                  <div className="w-5 h-5" />
+                ) : resolvedTheme === "dark" ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
                 )}
-              </div>
+              </button>
 
               {/* User Section */}
-              {user ? (
-                <div className="relative" ref={userMenuRef}>
+              {loading ? (
+                <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />
+              ) : user ? (
+                <div className="relative">
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center space-x-2 focus:outline-none group"
+                    className="flex items-center gap-3 px-3 py-1 rounded-2xl hover:bg-gray-100 dark:hover:bg-white/10 transition"
                   >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
+                    <div className="w-9 h-9 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700">
                       {user.image ? (
-                        <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                        <Image
+                          src={user.image}
+                          alt={user.name}
+                          width={36}
+                          height={36}
+                          className="object-cover"
+                          priority
+                        />
                       ) : (
-                        user.name.charAt(0).toUpperCase()
+                        <div className="w-full h-full bg-gradient-to-br from-red-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                          {user.name?.[0]?.toUpperCase() || "U"}
+                        </div>
                       )}
                     </div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition">
-                      {user.name.split(' ')[0]}
-                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${isUserMenuOpen ? "rotate-180" : ""}`}
+                    />
                   </button>
 
-                  {/* Dropdown Menu */}
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-fadeIn">
-                      <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                        <p className="text-sm font-semibold text-gray-900 dark:text-white">{user.name}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
-                        {user.role === 'ADMIN' && (
-                          <span className="inline-block mt-1 text-xs px-2 py-0.5 bg-gradient-to-r from-red-500/20 to-purple-500/20 text-red-600 dark:text-red-400 rounded-full">
-                            Admin
-                          </span>
-                        )}
+                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border dark:border-gray-700 py-2 z-50">
+                      <div className="px-5 py-2 border-b dark:border-gray-700">
+                        <p className="font-semibold">{user.name}</p>
+                        <p className="text-xs text-gray-300">{user.email}</p>
                       </div>
-                      <div className="py-2">
-                        {user.role === 'ADMIN' ? (
-                          // Admin dropdown menu
-                          <>
-                            <Link
-                              href="/admin/dashboard"
-                              className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition"
-                              onClick={() => setIsUserMenuOpen(false)}
-                            >
-                              <LayoutDashboard className="w-4 h-4" />
-                              <span>Dashboard</span>
-                            </Link>
-                            {adminMenuLinks.map((link) => {
-                              const Icon = link.icon;
-                              return (
-                                <Link
-                                  key={link.href}
-                                  href={link.href}
-                                  className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition"
-                                  onClick={() => setIsUserMenuOpen(false)}
-                                >
-                                  <Icon className="w-4 h-4" />
-                                  <span>{link.label}</span>
-                                </Link>
-                              );
-                            })}
-                          </>
-                        ) : (
-                          // Regular user dropdown menu
-                          <>
-                            <Link
-                              href="/profile"
-                              className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition"
-                              onClick={() => setIsUserMenuOpen(false)}
-                            >
-                              <User className="w-4 h-4" />
-                              <span>Profile</span>
-                            </Link>
-                            <Link
-                              href="/watchlist"
-                              className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition"
-                              onClick={() => setIsUserMenuOpen(false)}
-                            >
-                              <List className="w-4 h-4" />
-                              <span>Watchlist</span>
-                            </Link>
-                            <Link
-                              href="/subscription"
-                              className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition"
-                              onClick={() => setIsUserMenuOpen(false)}
-                            >
-                              <CreditCard className="w-4 h-4" />
-                              <span>Subscription</span>
-                            </Link>
-                          </>
-                        )}
-                        
-                        <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                      <div className="p-2">
                         <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            onLogout?.();
-                          }}
-                          className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-4 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl"
                         >
-                          <LogOut className="w-4 h-4" />
-                          <span>Logout</span>
+                          <LogOut className="w-4 h-4" /> Logout
                         </button>
                       </div>
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center gap-3">
                   <Link
                     href="/login"
-                    className="px-4 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition"
+                    className="px-5 py-2 text-sm font-medium hover:text-red-600 transition"
                   >
                     Login
                   </Link>
                   <Link
                     href="/register"
-                    className="px-4 py-1.5 text-sm font-medium bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-full hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300"
+                    className="px-5 py-2 bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-full text-sm font-medium"
                   >
                     Sign Up
                   </Link>
@@ -380,204 +308,89 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition"
+              className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      <div
-        ref={mobileMenuRef}
-        className={`fixed inset-0 z-40 bg-white dark:bg-gray-900 transform transition-transform duration-300 ease-in-out md:hidden ${
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-        style={{ top: '64px' }}
-      >
-        <div className="flex flex-col h-full overflow-y-auto">
-          {/* Mobile Search - Only for regular users */}
-          {user?.role !== 'ADMIN' && (
-            <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-              <form onSubmit={handleSearch} className="relative">
+      {/* Mobile Menu - Full Functional */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-white dark:bg-gray-900 md:hidden"
+          style={{ top: "64px" }}
+        >
+          <div className="p-6 flex flex-col h-full overflow-y-auto">
+            {/* Mobile Search */}
+            {!isAdmin && (
+              <form onSubmit={handleSearch} className="mb-6">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search movies, series..."
-                  className="w-full pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:border-red-500 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                  autoFocus
+                  placeholder="Search movies & series..."
+                  className="w-full pl-10 pr-4 py-3 bg-gray-100 dark:bg-gray-800 rounded-2xl border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               </form>
-            </div>
-          )}
+            )}
 
-          {/* Mobile Theme Toggle */}
-          <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Theme</span>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => handleThemeChange('light')}
-                  className={`p-2 rounded-lg transition ${
-                    theme === 'light'
-                      ? 'bg-gradient-to-r from-red-500/20 to-purple-500/20 text-red-600 dark:text-red-400'
-                      : 'text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
-                  }`}
-                >
-                  <Sun className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => handleThemeChange('dark')}
-                  className={`p-2 rounded-lg transition ${
-                    theme === 'dark'
-                      ? 'bg-gradient-to-r from-red-500/20 to-purple-500/20 text-red-600 dark:text-red-400'
-                      : 'text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
-                  }`}
-                >
-                  <Moon className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => handleThemeChange('system')}
-                  className={`p-2 rounded-lg transition ${
-                    theme === 'system'
-                      ? 'bg-gradient-to-r from-red-500/20 to-purple-500/20 text-red-600 dark:text-red-400'
-                      : 'text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'
-                  }`}
-                >
-                  <Laptop className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Links */}
-          <div className="flex-1 py-4">
-            {getNavLinks().map((link) => {
-              const Icon = link.icon;
-              const isActive = pathName === link.href;
-              return (
+            {/* Mobile Navigation Links */}
+            <div className="flex-1 space-y-2">
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-4 py-3 text-base font-medium transition ${
-                    isActive
-                      ? 'bg-gradient-to-r from-red-500/20 to-purple-500/20 text-red-600 dark:text-red-400 border-l-4 border-red-500'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10'
+                  className={`flex items-center gap-3 px-4 py-4 rounded-2xl text-base font-medium transition ${
+                    pathname === link.href
+                      ? "bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400"
+                      : "hover:bg-gray-100 dark:hover:bg-white/10"
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
-                  <span>{link.label}</span>
+                  <link.icon className="w-5 h-5" />
+                  {link.label}
                 </Link>
-              );
-            })}
-          </div>
+              ))}
+            </div>
 
-          {/* Mobile User Section */}
-          <div className="border-t border-gray-200 dark:border-gray-800 p-4">
-            {user ? (
-              <>
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-purple-600 flex items-center justify-center text-white font-semibold">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{user.name}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  {user.role === 'ADMIN' ? (
-                    // Admin mobile menu
-                    <>
-                      <Link
-                        href="/admin/dashboard"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition"
-                      >
-                        <LayoutDashboard className="w-4 h-4" />
-                        <span>Dashboard</span>
-                      </Link>
-                      {adminMenuLinks.map((link) => {
-                        const Icon = link.icon;
-                        return (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition"
-                          >
-                            <Icon className="w-4 h-4" />
-                            <span>{link.label}</span>
-                          </Link>
-                        );
-                      })}
-                    </>
-                  ) : (
-                    // Regular user mobile menu
-                    <>
-                      <Link
-                        href="/profile"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition"
-                      >
-                        <User className="w-4 h-4" />
-                        <span>Profile</span>
-                      </Link>
-                      <Link
-                        href="/watchlist"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition"
-                      >
-                        <List className="w-4 h-4" />
-                        <span>Watchlist</span>
-                      </Link>
-                      <Link
-                        href="/subscription"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center space-x-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition"
-                      >
-                        <CreditCard className="w-4 h-4" />
-                        <span>Subscription</span>
-                      </Link>
-                    </>
-                  )}
-                  <button
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      onLogout?.();
-                    }}
-                    className="w-full flex items-center space-x-3 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition mt-2"
+            {/* Mobile User Section */}
+            <div className="pt-6 border-t dark:border-gray-800">
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="w-full py-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-2xl font-medium flex items-center justify-center gap-2"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Logout
+                </button>
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="py-4 text-center border rounded-2xl font-medium"
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span>Logout</span>
-                  </button>
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="py-4 text-center bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-2xl font-medium"
+                  >
+                    Sign Up
+                  </Link>
                 </div>
-              </>
-            ) : (
-              <div className="space-y-3">
-                <Link
-                  href="/login"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-center px-4 py-2 text-sm font-medium bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-full"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
