@@ -234,9 +234,9 @@ export default function Navbar() {
                 {!mounted ? (
                   <div className="w-5 h-5" />
                 ) : resolvedTheme === "dark" ? (
-                  <Sun className="w-5 h-5" />
-                ) : (
                   <Moon className="w-5 h-5" />
+                ) : (
+                  <Sun className="w-5 h-5" />
                 )}
               </button>
 

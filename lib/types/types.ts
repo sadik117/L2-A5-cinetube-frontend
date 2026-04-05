@@ -31,3 +31,16 @@ export interface IRegisterData {
   password: string;
   image?: string;
 }
+
+export interface MediaCardProps {
+  item: {
+    id: string;
+    title: string;
+    coverImage: string;
+    averageRating: number;
+    releaseYear: number;
+    genre?: string;
+    type?: "Movie" | "Series";
+    totalRatings?: number;
+  };
+}
