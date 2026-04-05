@@ -94,12 +94,12 @@ export default function HeroSection() {
     return () => clearInterval(timer);
   }, [isAnimating]);
 
-  const goToSlide = (index: number) => {
-    if (isAnimating || index === currentSlide) return;
-    setIsAnimating(true);
-    setCurrentSlide(index);
-    setTimeout(() => setIsAnimating(false), 500);
-  };
+//   const goToSlide = (index: number) => {
+//     if (isAnimating || index === currentSlide) return;
+//     setIsAnimating(true);
+//     setCurrentSlide(index);
+//     setTimeout(() => setIsAnimating(false), 500);
+//   };
 
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
@@ -121,7 +121,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[100vh] min-h-[600px] sm:min-h-[600px] w-full -mb-36 md:-mb-18 mt-0 md:mt-5  overflow-hidden bg-gradient-to-b from-gray-900 to-black">
+    <section className="relative h-screen min-h-150 sm:min-h-150 w-full -mb-36 md:-mb-18 mt-0 md:mt-5  overflow-hidden bg-linear-to-b from-gray-900 to-black">
       {/* Background Image Carousel  */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
@@ -143,9 +143,9 @@ export default function HeroSection() {
                 sizes="(max-width: 768px) 100vw, 100vw"
               />
               {/* Overlay Gradients - Enhanced for mobile */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/60 to-black/30" />
+              <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-l from-black/20 via-transparent to-transparent" />
             </div>
           </div>
         ))}
@@ -166,7 +166,7 @@ export default function HeroSection() {
               <div className="max-w-2xl">
                 {/* Trending Badge - Mobile optimized */}
                 {slide.trending && (
-                  <div className="inline-flex items-center space-x-1.5 sm:space-x-2 px-2 sm:px-3 py-1 bg-gradient-to-r from-red-500 to-purple-600 rounded-full mb-3 sm:mb-4 animate-pulse">
+                  <div className="inline-flex items-center space-x-1.5 sm:space-x-2 px-2 sm:px-3 py-1 bg-linear-to-r from-red-500 to-purple-600 rounded-full mb-3 sm:mb-4 animate-pulse">
                     <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                     <span className="text-white text-[10px] sm:text-xs font-semibold tracking-wide">
                       TRENDING
@@ -209,12 +209,12 @@ export default function HeroSection() {
 
                 {/* Buttons - Stacked on mobile, row on tablet+ */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <button className="group relative px-6 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-full font-semibold text-sm sm:text-base overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25 w-full sm:w-auto">
+                  <button className="group relative px-6 sm:px-8 py-2.5 sm:py-3 bg-linear-to-r from-red-500 to-purple-600 text-white rounded-full font-semibold text-sm sm:text-base overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25 w-full sm:w-auto">
                     <span className="relative z-10 flex items-center justify-center space-x-2">
                       <Play className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>Watch Now</span>
                     </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                    <div className="absolute inset-0 bg-linear-to-r from-red-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
                   </button>
 
                   <Link
@@ -234,7 +234,7 @@ export default function HeroSection() {
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-r from-red-500 to-purple-600 border-2 border-black flex items-center justify-center"
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-linear-to-r from-red-500 to-purple-600 border-2 border-black flex items-center justify-center"
                       >
                         <span className="text-[8px] sm:text-[10px] text-white font-bold">
                           {i}

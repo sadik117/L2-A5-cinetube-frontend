@@ -24,7 +24,7 @@ import {
   Laptop,
   LayoutDashboard
 } from 'lucide-react';
-import { NavbarProps } from '@/lib/types';
+import { NavbarProps } from '@/lib/types/types';
 import { useTheme } from "next-themes";
 
 export default function Navbar({ user, onLogout }: NavbarProps) {
