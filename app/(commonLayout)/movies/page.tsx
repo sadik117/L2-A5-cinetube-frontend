@@ -32,6 +32,7 @@ export default function MoviesPage() {
               <MediaCard key={item.id} item={item} />
             ))}
           </div>
+
           {movies.length === 0 && !loading && (
             <p className="text-center text-gray-500 py-12">No movies found.</p>
           )}

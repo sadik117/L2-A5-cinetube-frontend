@@ -4,7 +4,7 @@ import axios from "axios";
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
-  timeout: 10000, // optional: prevent hanging requests
+  timeout: 10000, // optional prevent hanging requests
 });
 
 // Flag to prevent multiple refresh attempts at the same time

@@ -6,3 +6,11 @@ export const getMedia = async (params: any) => {
   // console.log(res.data);
   return res.data;
 };
+
+export const getSingleMedia = async (id: string) => {
+  const res = await api.get(`/movie/${id}`);
+  return res.data;
+};
+
+
+

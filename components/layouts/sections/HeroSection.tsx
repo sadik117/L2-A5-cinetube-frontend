@@ -10,8 +10,7 @@ import {
   Star,
   Clock,
   Calendar,
-  Film,
-  Eye,
+  Film
 } from "lucide-react";
 
 const slides = [
@@ -224,24 +223,6 @@ export default function HeroSection() {
                     <Info className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span>More Info</span>
                   </Link>
-                </div>
-
-                {/* Viewers Count - Mobile friendly */}
-                <div className="mt-6 sm:mt-8 flex items-center space-x-2 text-gray-400 text-xs sm:text-sm">
-                  <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>1.2M+ views this week</span>
-                  <div className="flex -space-x-2 ml-2">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-linear-to-r from-red-500 to-purple-600 border-2 border-black flex items-center justify-center"
-                      >
-                        <span className="text-[8px] sm:text-[10px] text-white font-bold">
-                          {i}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </div>
             </div>

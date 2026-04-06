@@ -5,6 +5,37 @@ export interface User {
   email: string;
   role: 'USER' | 'ADMIN';
   image?: string;
+  subscriptions?: Array<{
+    id: string;
+    status: string;
+  }> | null;
+}
+
+
+export type MediaType = "movie" | "series";
+export type PriceType = "Free" | "Premium";
+export type Genre = string;
+export interface Media {
+  [x: string]: import("react/jsx-runtime").JSX.Element;
+  id: string;
+  type: MediaType;
+  title: string;
+  coverImage: string | undefined;
+  backdropImage?: string;
+  synopsis: string;
+  fullSynopsis?: string;
+  genre: Genre[];
+  releaseYear: number;
+  director: string;
+  cast: string[];
+  platform: string;
+  priceType: PriceType;          
+  youtubeLink: string;
+
+  averageRating: number;
+  totalReviews: number;
+
+  createdAt: string;
 }
 
 export interface AuthContextType {
@@ -43,4 +74,12 @@ export interface MediaCardProps {
     type?: "Movie" | "Series";
     totalRatings?: number;
   };
+}
+
+export interface CreateReviewData {
+  mediaId: string;
+  rating: number;
+  content: string;
+  tags: string[];
+  isSpoiler: boolean;
 }

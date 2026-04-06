@@ -23,7 +23,7 @@ export default function MediaCard({ item }: MediaCardProps) {
   };
 
   return (
-    <Link href={`/media/${item.id}`}>
+    <Link href={`/movies/${item.id}`}>
       <div
         className="group relative bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}

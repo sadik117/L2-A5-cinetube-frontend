@@ -1,6 +1,6 @@
 "use client";
 
-import { Film, Loader2, Sparkles, Heart, Star } from "lucide-react";
+import { Film, Sparkles, Heart, Star } from "lucide-react";
 
 interface LoadingProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -94,7 +94,7 @@ export default function Loading({
   };
 
   const content = (
-    <div className="flex flex-col items-center justify-center space-y-4">
+    <div className="flex flex-col items-center justify-center mt-20">
       {renderLoader()}
       
       {variant !== "skeleton" && (
