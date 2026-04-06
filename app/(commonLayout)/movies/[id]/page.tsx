@@ -27,23 +27,35 @@ import {
   Plus,
   Bookmark,
   Sparkles,
-  ThumbsUp
+  ThumbsUp,
 } from "lucide-react";
 import PremiumGate from "@/lib/subscriptionMiddleware";
 import { useAuth } from "@/components/providers/auth-provider";
 import { NotFound } from "@/components/layouts/shared/NotFound";
 import { createReview, toggleReviewLike } from "@/services/review.api";
 import { toast } from "sonner";
+import WatchlistButton from "@/components/modules/watchlist/WatchlistButton";
 
 const suggestedTags = [
-  "Masterpiece", "Underrated", "Classic", "Great Acting", 
-  "Amazing Visuals", "Good Story", "Action Packed", "Emotional",
-  "Must Watch", "Disappointing", "Slow Paced", "Funny"
+  "Masterpiece",
+  "Underrated",
+  "Classic",
+  "Great Acting",
+  "Amazing Visuals",
+  "Good Story",
+  "Action Packed",
+  "Emotional",
+  "Must Watch",
+  "Disappointing",
+  "Slow Paced",
+  "Funny",
 ];
 
 export default function MediaDetailsPage() {
   const params = useParams();
-  const { media, reviews, loading, refetchReviews } = useMediaDetails(params.id as string);
+  const { media, reviews, loading, refetchReviews } = useMediaDetails(
+    params.id as string,
+  );
 
   const [showTrailer, setShowTrailer] = useState(false);
   const [showReviewBox, setShowReviewBox] = useState(false);
@@ -70,7 +82,7 @@ export default function MediaDetailsPage() {
 
   const isPremiumContent = media.priceType === "Premium";
   const hasActiveSubscription = user?.subscriptions?.some(
-    (sub: any) => sub.status === "active"
+    (sub: any) => sub.status === "active",
   );
 
   if (isPremiumContent && !hasActiveSubscription) {
@@ -82,12 +94,12 @@ export default function MediaDetailsPage() {
       toast.error("Please login to write a review");
       return;
     }
-    
+
     if (!reviewText.trim()) {
       toast.error("Please write your review");
       return;
     }
-    
+
     if (rating < 1 || rating > 10) {
       toast.error("Please select a rating from 1 to 10");
       return;
@@ -100,7 +112,7 @@ export default function MediaDetailsPage() {
         content: reviewText,
         rating,
         tags: selectedTags,
-        isSpoiler
+        isSpoiler,
       });
 
       toast.success("Review submitted! Awaiting admin approval.");
@@ -109,7 +121,7 @@ export default function MediaDetailsPage() {
       setSelectedTags([]);
       setIsSpoiler(false);
       setShowReviewBox(false);
-      
+
       // refetchReviews is defined
       await refetchReviews();
     } catch (error: any) {
@@ -124,7 +136,7 @@ export default function MediaDetailsPage() {
       toast.error("Please login to like reviews");
       return;
     }
-    
+
     try {
       await toggleReviewLike(reviewId);
       // Refetch reviews to update like count
@@ -141,7 +153,7 @@ export default function MediaDetailsPage() {
   };
 
   const removeTag = (tag: string) => {
-    setSelectedTags(selectedTags.filter(t => t !== tag));
+    setSelectedTags(selectedTags.filter((t) => t !== tag));
   };
 
   const handleShare = async () => {
@@ -185,7 +197,9 @@ export default function MediaDetailsPage() {
               <div className="flex-1 text-white animate-fadeInUp animation-delay-200">
                 {/* Title & Badges */}
                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h1 className="text-3xl md:text-5xl font-bold">{media.title}</h1>
+                  <h1 className="text-3xl md:text-5xl font-bold">
+                    {media.title}
+                  </h1>
                   {media.trending && (
                     <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-purple-600 rounded-full text-xs font-semibold flex items-center gap-1">
                       <TrendingUp className="w-3 h-3" />
@@ -212,21 +226,32 @@ export default function MediaDetailsPage() {
                   </div>
                   <div className="flex items-center gap-1">
                     <Film className="w-4 h-4" />
-                    <span>{media.type === "series" ? "TV Series" : "Movie"}</span>
+                    <span>
+                      {media.type === "series" ? "TV Series" : "Movie"}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Star className={`w-4 h-4 ${getRatingColor(media.averageRating)} fill-current`} />
-                    <span className={`font-semibold ${getRatingColor(media.averageRating)}`}>
+                    <Star
+                      className={`w-4 h-4 ${getRatingColor(media.averageRating)} fill-current`}
+                    />
+                    <span
+                      className={`font-semibold ${getRatingColor(media.averageRating)}`}
+                    >
                       {formatRating(media.averageRating)}
                     </span>
-                    <span className="text-gray-400">({media.totalReviews} reviews)</span>
+                    <span className="text-gray-400">
+                      ({media.totalReviews} reviews)
+                    </span>
                   </div>
                 </div>
 
                 {/* Genres */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {media.genre?.map((g: string) => (
-                    <span key={g} className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs">
+                    <span
+                      key={g}
+                      className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs"
+                    >
                       {g}
                     </span>
                   ))}
@@ -239,26 +264,21 @@ export default function MediaDetailsPage() {
 
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-3">
-                  <button 
+                  <button
                     onClick={() => setShowTrailer(true)}
                     className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-purple-600 rounded-full font-semibold flex items-center gap-2 hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-105"
                   >
                     <Play className="w-4 h-4" />
                     Watch Trailer
                   </button>
-                  
-                  <button 
+
+                  <WatchlistButton media={media} />
+
+                  <button
                     onClick={handleShare}
                     className="p-2.5 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300"
                   >
                     <Share2 className="w-5 h-5" />
-                  </button>
-                  
-                  <button 
-                    onClick={() => setIsBookmarked(!isBookmarked)}
-                    className="p-2.5 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300"
-                  >
-                    <Bookmark className={`w-5 h-5 ${isBookmarked ? "fill-yellow-500 text-yellow-500" : ""}`} />
                   </button>
                 </div>
               </div>
@@ -291,14 +311,23 @@ export default function MediaDetailsPage() {
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Director</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{media.director}</p>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                      Director
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {media.director}
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Cast</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                      Cast
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {media.cast?.map((actor: string) => (
-                        <span key={actor} className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm">
+                        <span
+                          key={actor}
+                          className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm"
+                        >
                           {actor}
                         </span>
                       ))}
@@ -314,7 +343,7 @@ export default function MediaDetailsPage() {
                     <Tv className="w-5 h-5 text-green-500" />
                     Where to Watch
                   </h2>
-                  <div className="flex flex-wrap gap-3">   
+                  <div className="flex flex-wrap gap-3">
                     <p className="px-4 py-2 bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-lg text-sm font-semibold">
                       {media.platform}
                     </p>
@@ -329,13 +358,20 @@ export default function MediaDetailsPage() {
               <div className="bg-gradient-to-br from-red-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
                 <h3 className="text-lg font-semibold mb-4">Community Rating</h3>
                 <div className="text-center">
-                  <div className="text-5xl font-bold mb-2">{formatRating(media.averageRating)}</div>
+                  <div className="text-5xl font-bold mb-2">
+                    {formatRating(media.averageRating)}
+                  </div>
                   <div className="flex justify-center gap-1 mb-2">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-5 h-5 ${i < Math.floor(media.averageRating / 2) ? "fill-current" : ""}`} />
+                      <Star
+                        key={i}
+                        className={`w-5 h-5 ${i < Math.floor(media.averageRating / 2) ? "fill-current" : ""}`}
+                      />
                     ))}
                   </div>
-                  <p className="text-sm opacity-90">Based on {media.totalReviews} user reviews</p>
+                  <p className="text-sm opacity-90">
+                    Based on {media.totalReviews} user reviews
+                  </p>
                 </div>
               </div>
             </div>
@@ -347,7 +383,9 @@ export default function MediaDetailsPage() {
               <h2 className="text-2xl font-bold flex items-center gap-2">
                 <MessageCircle className="w-6 h-6 text-red-500" />
                 User Reviews
-                <span className="text-sm font-normal text-gray-500 ml-2">({reviews?.length || 0})</span>
+                <span className="text-sm font-normal text-gray-500 ml-2">
+                  ({reviews?.length || 0})
+                </span>
               </h2>
 
               <button
@@ -367,7 +405,7 @@ export default function MediaDetailsPage() {
                   <Sparkles className="w-5 h-5 text-red-500" />
                   Share Your Thoughts
                 </h3>
-                
+
                 {/* Rating Selection */}
                 <div className="mb-4">
                   <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
@@ -382,11 +420,12 @@ export default function MediaDetailsPage() {
                         onMouseLeave={() => setHoverRating(0)}
                         className={`
                           w-10 h-10 rounded-full font-bold transition-all duration-200
-                          ${rating >= r 
-                            ? "bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-lg scale-110" 
-                            : hoverRating >= r
-                            ? "bg-gradient-to-r from-red-500/50 to-purple-600/50 text-white scale-105"
-                            : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600"
+                          ${
+                            rating >= r
+                              ? "bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-lg scale-110"
+                              : hoverRating >= r
+                                ? "bg-gradient-to-r from-red-500/50 to-purple-600/50 text-white scale-105"
+                                : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600"
                           }
                         `}
                       >
@@ -417,7 +456,10 @@ export default function MediaDetailsPage() {
                   </label>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {selectedTags.map((tag) => (
-                      <span key={tag} className="px-3 py-1 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full text-sm flex items-center gap-1">
+                      <span
+                        key={tag}
+                        className="px-3 py-1 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full text-sm flex items-center gap-1"
+                      >
                         {tag}
                         <button type="button" onClick={() => removeTag(tag)}>
                           <X className="w-3 h-3" />
@@ -426,16 +468,18 @@ export default function MediaDetailsPage() {
                     ))}
                   </div>
                   <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                    {suggestedTags.filter(tag => !selectedTags.includes(tag)).map((tag) => (
-                      <button
-                        key={tag}
-                        onClick={() => addTag(tag)}
-                        className="px-3 py-1 bg-gray-200 dark:bg-gray-700 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-full text-sm transition flex items-center gap-1"
-                      >
-                        <Plus className="w-3 h-3" />
-                        {tag}
-                      </button>
-                    ))}
+                    {suggestedTags
+                      .filter((tag) => !selectedTags.includes(tag))
+                      .map((tag) => (
+                        <button
+                          key={tag}
+                          onClick={() => addTag(tag)}
+                          className="px-3 py-1 bg-gray-200 dark:bg-gray-700 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-full text-sm transition flex items-center gap-1"
+                        >
+                          <Plus className="w-3 h-3" />
+                          {tag}
+                        </button>
+                      ))}
                   </div>
                 </div>
 
@@ -448,7 +492,10 @@ export default function MediaDetailsPage() {
                     onChange={(e) => setIsSpoiler(e.target.checked)}
                     className="w-4 h-4 text-red-500 rounded focus:ring-red-500"
                   />
-                  <label htmlFor="spoiler" className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                  <label
+                    htmlFor="spoiler"
+                    className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1"
+                  >
                     <AlertCircle className="w-4 h-4" />
                     This review contains spoilers
                   </label>
@@ -493,8 +540,12 @@ export default function MediaDetailsPage() {
             {!reviews || reviews.length === 0 ? (
               <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
                 <MessageCircle className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Reviews Yet</h3>
-                <p className="text-gray-500 dark:text-gray-400">Be the first to review this {media.type}!</p>
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  No Reviews Yet
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Be the first to review this {media.type}!
+                </p>
                 <button
                   onClick={() => setShowReviewBox(true)}
                   className="mt-4 px-6 py-2 bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition"
@@ -505,9 +556,12 @@ export default function MediaDetailsPage() {
             ) : (
               <div className="space-y-6">
                 {reviews.map((review: any) => (
-                  <div key={review.id} className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                  <div
+                    key={review.id}
+                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                  >
                     <ReviewCard review={review} />
-                    
+
                     {/* Like Button */}
                     <div className="px-6 pb-2 flex items-center gap-4">
                       <button
@@ -515,10 +569,13 @@ export default function MediaDetailsPage() {
                         className="flex items-center gap-2 text-sm text-gray-500 hover:text-red-500 transition-colors group"
                       >
                         <ThumbsUp className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                        <span>{review._count?.likes || review.likes?.length || 0} likes</span>
+                        <span>
+                          {review._count?.likes || review.likes?.length || 0}{" "}
+                          likes
+                        </span>
                       </button>
                     </div>
-                    
+
                     {/* Comments Section */}
                     <div className="border-t border-gray-200 dark:border-gray-700">
                       <CommentSection reviewId={review.id} />
@@ -563,7 +620,7 @@ export default function MediaDetailsPage() {
             transform: translateY(0);
           }
         }
-        
+
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -572,20 +629,20 @@ export default function MediaDetailsPage() {
             opacity: 1;
           }
         }
-        
+
         .animate-fadeInUp {
           animation: fadeInUp 0.6s ease-out forwards;
         }
-        
+
         .animate-fadeIn {
           animation: fadeIn 0.3s ease-out forwards;
         }
-        
+
         .animation-delay-200 {
           animation-delay: 0.2s;
           opacity: 0;
         }
-        
+
         .line-clamp-3 {
           display: -webkit-box;
           -webkit-line-clamp: 3;

@@ -94,7 +94,7 @@ export default function Loading({
   };
 
   const content = (
-    <div className="flex flex-col items-center justify-center mt-20">
+    <div className="min-h-48 flex flex-col items-center justify-center mt-20">
       {renderLoader()}
       
       {variant !== "skeleton" && (

@@ -5,12 +5,10 @@ import { useState } from "react";
 import { Bookmark } from "lucide-react";
 import { addToWatchlist } from "@/services/watchlist.api";
 import { toast } from "sonner";
-import { useRouter } from "next/router";
-
+import { useRouter } from "next/navigation";
 
 export default function WatchlistButton({ media }: any) {
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   if (!media) return null;
@@ -30,7 +28,6 @@ export default function WatchlistButton({ media }: any) {
         },
       });
     } catch (err: any) {
-      // handle duplicate
       if (err?.response?.status === 409) {
         toast.error("Already in watchlist");
       } else {

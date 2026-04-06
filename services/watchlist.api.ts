@@ -10,5 +10,6 @@ export const removeFromWatchlist = async (mediaId: string) => {
 
 export const getMyWatchlist = async () => {
   const res = await api.get("/watchlist/my-watchlist");
-  return res.data;
+  // console.log(res);
+  return res.data.data;
 };
