@@ -3,25 +3,27 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
 
 interface PremiumGateProps {
   media: {
     priceType: "Premium" | "Free";
     title?: string;
   };
-  user: any | null;
+  user: any;
 }
 
-export default function PremiumGate({ media, user }: PremiumGateProps) {
+export default function PremiumGate({ media }: PremiumGateProps) {
   const router = useRouter();
 
   // Safe check
   const isPremiumContent = media?.priceType === "Premium";
 
-  // Check if user has active subscription
-  const hasActiveSubscription =
-    user?.subscriptions?.some((sub: any) => sub.status === "active") ||
-    user?.subscriptions?.status === "active";
+  const { subscription, loading } = useSubscription();
+
+  if (loading) return null;
+
+  const hasActiveSubscription = subscription?.status === "active";
 
   if (!isPremiumContent || hasActiveSubscription) {
     return null;

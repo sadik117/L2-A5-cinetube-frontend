@@ -11,16 +11,13 @@ import {
   Trash2, 
   Film, 
   Tv, 
-  Clock, 
   Calendar, 
   Star, 
-  Eye, 
-  Heart,
   BookmarkCheck,
-  TrendingUp,
   Sparkles,
   ArrowRight,
-  Loader2
+  Loader2,
+  FilmIcon
 } from "lucide-react";
 
 export default function WatchlistPage() {
@@ -71,7 +68,7 @@ export default function WatchlistPage() {
         <div className="text-center">
           <div className="relative w-20 h-20 mx-auto mb-4">
             <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-purple-600 rounded-full animate-ping opacity-75" />
-            <div className="relative bg-gradient-to-r from-red-500 to-purple-600 rounded-full p-4">
+            <div className="relative bg-gradient-to-r from-red-500 to-purple-600 rounded-full p-6">
               <Film className="w-8 h-8 text-white animate-spin-slow" />
             </div>
           </div>
@@ -121,16 +118,16 @@ export default function WatchlistPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-red-600 to-purple-700 text-white mt-16 py-4 mb-8">
+      <div className="relative bg-gradient-to-r from-red-600 to-purple-700 text-white mt-16 py-4 mb-6">
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-2 flex items-center gap-3">
-                <BookmarkCheck className="w-10 h-10" />
+              <h1 className="text-xl md:text-2xl font-bold mb-2 flex items-center gap-3">
+                <BookmarkCheck className="w-8 h-8" />
                 My Watchlist
               </h1>
-              <p className="text-lg opacity-90">
+              <p className="text-md opacity-90">
                 {watchlist.length} {watchlist.length === 1 ? "item" : "items"} saved for later
               </p>
             </div>
@@ -164,7 +161,6 @@ export default function WatchlistPage() {
                 {/* Media Image */}
                 <div 
                   className="relative w-full aspect-[2/3] cursor-pointer overflow-hidden"
-                  onClick={() => router.push(`/media/${media.id}`)}
                 >
                   <Image
                     src={media.coverImage}
@@ -172,16 +168,6 @@ export default function WatchlistPage() {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Quick View Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="px-4 py-2 bg-white/90 dark:bg-gray-900/90 rounded-lg text-sm font-semibold text-gray-900 dark:text-white transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                      Quick View
-                    </button>
-                  </div>
 
                   {/* Rating Badge */}
                   <div className="absolute top-2 right-2 px-2 py-1 bg-black/70 backdrop-blur-sm rounded-lg flex items-center gap-1">
@@ -227,8 +213,8 @@ export default function WatchlistPage() {
                       <span>{media.releaseYear}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Eye className="w-3 h-3" />
-                      <span>{media.totalViews || 0} views</span>
+                      <FilmIcon className="w-3 h-3" />
+                      <span>{media.type}</span>
                     </div>
                   </div>
 

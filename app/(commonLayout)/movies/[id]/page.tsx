@@ -65,7 +65,6 @@ export default function MediaDetailsPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isSpoiler, setIsSpoiler] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const { user } = useAuth();
 
@@ -80,14 +79,7 @@ export default function MediaDetailsPage() {
     return "text-orange-500";
   };
 
-  const isPremiumContent = media.priceType === "Premium";
-  const hasActiveSubscription = user?.subscriptions?.some(
-    (sub: any) => sub.status === "active",
-  );
-
-  if (isPremiumContent && !hasActiveSubscription) {
-    return <PremiumGate media={media} user={user} />;
-  }
+ <PremiumGate media={media} user={user} />;
 
   const handleCreateReview = async () => {
     if (!user) {

@@ -7,5 +7,6 @@ export const createCheckoutSession = async (plan: "monthly" | "yearly") => {
 
 export const getMySubscription = async () => {
   const res = await api.get("/payment/my-subscription");
+//   console.log(res);
   return res.data;
 };

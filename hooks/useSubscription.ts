@@ -10,15 +10,19 @@ export const useSubscription = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchSubscription = async () => {
-    try {
-      const res = await getMySubscription();
-      setSubscription(res);
-    } catch {
-      setSubscription(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const res = await getMySubscription();
+
+    // console.log("SUB RESPONSE:", res);
+
+    setSubscription(res);
+  } catch (err) {
+    console.error("sub error:", err);
+    setSubscription(null);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchSubscription();

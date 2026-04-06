@@ -60,13 +60,13 @@ export default function SubscriptionPage() {
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center justify-center p-3 bg-white/20 backdrop-blur-sm rounded-full mb-4">
-            <Crown className="w-6 h-6" />
+          <div className="inline-flex items-center justify-center p-3 bg-white/20 backdrop-blur-sm rounded-full mb-1">
+            <Crown className="w-5 h-5" />
           </div>
-          <h1 className="text-xl md:text-3xl font-bold mb-4">
+          <h1 className="text-lg md:text-xl font-bold mb-1">
             Upgrade Your Experience
           </h1>
-          <p className="text-md md:text-xl opacity-90 max-w-2xl mx-auto">
+          <p className="text-sm md:text-md opacity-90 max-w-2xl mx-auto">
             Get unlimited access to premium content, ad-free streaming, and exclusive features
           </p>
         </div>
