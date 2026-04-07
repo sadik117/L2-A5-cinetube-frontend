@@ -16,7 +16,6 @@ export type MediaType = "movie" | "series";
 export type PriceType = "Free" | "Premium";
 export type Genre = string;
 export interface Media {
-  [x: string]: import("react/jsx-runtime").JSX.Element;
   id: string;
   type: MediaType;
   title: string;

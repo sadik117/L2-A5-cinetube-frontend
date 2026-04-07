@@ -135,7 +135,7 @@ export default function Navbar() {
         { href: "/", label: "Home", icon: Home },
         { href: "/movies", label: "Movies", icon: Film },
         { href: "/series", label: "TV Series", icon: Tv },
-        { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+        { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
       ]
     : [
         { href: "/", label: "Home", icon: Home },
