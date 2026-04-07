@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "i.ibb.co", // Add this for imgBB
+        hostname: "i.ibb.co", //  this for imgBB
       },
       {
         protocol: "https",
@@ -17,7 +17,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com', // Add this for Google Profile Pictures
+        hostname: 'lh3.googleusercontent.com', // this for Google Profile Pictures
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com', // this line for upload posters in cloudinary
       },
     ],
   },

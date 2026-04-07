@@ -172,7 +172,7 @@ export default function AdminSidebar() {
       <div
         className={`
           hidden md:block fixed left-0 top-0 bottom-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-300 z-30
-          ${isCollapsed ? "w-20" : "w-72"}
+          ${isCollapsed ? "w-20" : "w-56"}
         `}
         onMouseEnter={() => isCollapsed && setIsHovered(true)}
         onMouseLeave={() => isCollapsed && setIsHovered(false)}

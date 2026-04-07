@@ -12,7 +12,7 @@ export interface User {
 }
 
 
-export type MediaType = "movie" | "series";
+export type MediaType = "Movie" | "Series";
 export type PriceType = "Free" | "Premium";
 export type Genre = string;
 export interface Media {

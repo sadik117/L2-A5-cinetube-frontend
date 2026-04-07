@@ -12,11 +12,11 @@ export const getAllMedia = async () => {
     return res.data.data;
 }
 
-export const createMedia = async (data: any) => {
+export const createMedia = async (data: FormData) => {
   return api.post("/movie", data);
 };
 
-export const updateMedia = async (id: string, data: any) => {
+export const updateMedia = async (id: string, data: FormData) => {
   return api.patch(`/movie/${id}`, data);
 };
 

@@ -76,7 +76,7 @@ export default function AdminHeader() {
   return (
     <>
       <header
-        className={`fixed top-0 right-0 left-0 md:left-72 z-40 transition-all duration-300 ${
+        className={`fixed top-0 right-0 left-0 md:left-16 z-40 transition-all duration-300 ${
           scrolled
             ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-800"
             : "bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800"
@@ -85,13 +85,13 @@ export default function AdminHeader() {
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between gap-4">
             
-            {/* Left Section - Title & Search */}
+            {/* Left Section */}
             <div className="flex items-center gap-4 flex-1">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 ml-10 md:ml-36">
                 <div className="hidden md:flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 </div>
-                <h1 className="text-lg md:text-2xl ml-10 md:ml-0 font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
                   Admin Dashboard
                 </h1>
               </div>
@@ -108,9 +108,9 @@ export default function AdminHeader() {
                   aria-label="Toggle theme"
                 >
                   {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-yellow-500" />
+                    <Moon className="w-5 h-5 text-yellow-500" />
                   ) : (
-                    <Moon className="w-5 h-5 text-gray-700" />
+                    <Sun className="w-5 h-5 text-gray-700" />
                   )}
                 </button>
               )}
