@@ -4,6 +4,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { getMe } from '@/services/auth.api';
 import { AuthContextType, User } from '@/lib/types/types';
+import { api } from '@/lib/axios';
 
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,12 +36,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(userData);
   };
 
-  const logout = () => {
-    // Clear cookies/token on backend if needed
-    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  const logout = async () => {
+  try {
+    await api.post("/auth/logout", {}); 
+  } catch (error) {
+    console.error("Backend logout failed:", error);
+  } finally {
+    // clear local state regardless of API success
     setUser(null);
-    window.location.href = "/login"; // or use router
-  };
+    
+    // Optional: Clear the token from document.cookie (only works if NOT httpOnly)
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    
+    // Redirect to login
+    window.location.href = "/login";
+  }
+};
 
   const refreshUser = async () => {
     try {
