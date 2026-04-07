@@ -37,7 +37,6 @@ const adminNav = [
 
 export default function AdminSidebar() {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -65,7 +64,7 @@ export default function AdminSidebar() {
   const SidebarContent = () => (
     <>
       {/* Header */}
-      <div className={`p-4 border-b border-gray-200 dark:border-gray-800 transition-all duration-300 ${isCollapsed ? "px-2" : ""}`}>
+      <div className={`p-3.5 border-b border-gray-200 dark:border-gray-800 transition-all duration-300 ${isCollapsed ? "px-2" : ""}`}>
         <div className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"}`}>
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-purple-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300" />
@@ -123,31 +122,10 @@ export default function AdminSidebar() {
         </div>
       </nav>
 
-      {/* Footer / Logout */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-800 mt-auto">
-        <button
-          onClick={logout}
-          className={`
-            w-full flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 
-            hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all duration-200
-            ${isCollapsed ? "justify-center" : ""}
-            group
-          `}
-        >
-          <LogOut className="w-5 h-5 transition-transform group-hover:scale-110" />
-          {!isCollapsed && <span className="font-medium">Logout</span>}
-          {isCollapsed && (
-            <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-              Logout
-            </div>
-          )}
-        </button>
-      </div>
-
       {/* Collapse Toggle Button (Desktop) */}
       <button
         onClick={toggleCollapse}
-        className="absolute -right-3 top-20 hidden md:flex items-center justify-center w-6 h-6 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110"
+        className="absolute right-0 top-20 hidden md:flex items-center justify-center w-6 h-6 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110"
       >
         {isCollapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
       </button>
@@ -161,7 +139,7 @@ export default function AdminSidebar() {
         onClick={() => setIsMobileOpen(true)}
         className="fixed top-4 left-4 z-50 md:hidden p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
       >
-        <Menu className="w-5 h-5" />
+        <Menu className="w-4 h-4" />
       </button>
 
       {/* Mobile Overlay */}

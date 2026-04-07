@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -72,14 +73,6 @@ export default function AdminHeader() {
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      // Handle search
-      console.log("Searching for:", searchQuery);
-    }
-  };
-
   return (
     <>
       <header
@@ -94,29 +87,14 @@ export default function AdminHeader() {
             
             {/* Left Section - Title & Search */}
             <div className="flex items-center gap-4 flex-1">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <div className="hidden md:flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span className="text-xs text-green-500 font-medium">Live</span>
                 </div>
-                <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-lg md:text-2xl ml-10 md:ml-0 font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
                   Admin Dashboard
                 </h1>
               </div>
-
-              {/* Search Bar - Desktop */}
-              <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md">
-                <div className="relative w-full">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search users, reviews, content..."
-                    className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
-                  />
-                </div>
-              </form>
             </div>
 
             {/* Right Section */}
@@ -137,19 +115,11 @@ export default function AdminHeader() {
                 </button>
               )}
 
-              {/* Help Button */}
-              <Link
-                href="/help"
-                className="hidden sm:flex p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
-              >
-                <HelpCircle className="w-5 h-5" />
-              </Link>
-
               {/* Notifications */}
               <div className="relative">
                 <button
                   onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                  className="relative p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
+                  className="relative p-2 rounded-xl bg-gray-400 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
                 >
                   <Bell className="w-5 h-5" />
                   {unreadCount > 0 && (
@@ -207,19 +177,19 @@ export default function AdminHeader() {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="flex items-center gap-3 px-2 py-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 group"
+                  className="flex items-center gap-3 px-1 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 group"
                 >
                   <div className="relative">
                     {user?.image ? (
                       <Image
                         src={user.image}
                         alt={user.name}
-                        width={40}
-                        height={40}
+                        width={30}
+                        height={30}
                         className="rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700 group-hover:ring-red-500 transition-all"
                       />
                     ) : (
-                      <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg ring-2 ring-gray-200 dark:ring-gray-700 group-hover:ring-red-500 transition-all">
+                      <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg ring-2 ring-gray-200 dark:ring-gray-700 group-hover:ring-red-500 transition-all">
                         {user?.name?.[0]?.toUpperCase() || "A"}
                       </div>
                     )}
@@ -264,7 +234,6 @@ export default function AdminHeader() {
                       </div>
                     </div>
                     
-
                       <div className="my-1" />
                       <button
                         onClick={() => {
