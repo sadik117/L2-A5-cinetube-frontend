@@ -1,30 +1,17 @@
-// app/(admin)/dashboard/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { getDashboardStats } from "@/services/admin.api";
 import { 
   Film, Users, MessageSquare, TrendingUp, 
-  Star, Eye, Award, Calendar, Clock, 
+  Star, Calendar,
   ChevronRight, PlusCircle, Settings, 
-  BarChart3, Activity, Sparkles, Zap,
-  Target, Globe, Heart, ThumbsUp
+  BarChart3, Sparkles, Zap,
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { DashboardStats } from "@/lib/types/types";
 
-interface DashboardStats {
-  totalMedia: number;
-  totalUsers: number;
-  totalReviews: number;
-  totalComments: number;
-  averageRating: number;
-  pendingReviews: number;
-  trendingMedia: number;
-  monthlyGrowth?: number;
-  activeUsers?: number;
-  recentActivities?: any[];
-}
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -35,7 +22,7 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const data = await getDashboardStats();
-        // Add mock growth data for demonstration
+        // mock growth data for demonstration
         setStats({
           ...data,
           monthlyGrowth: 23.5,
@@ -140,7 +127,7 @@ export default function AdminDashboard() {
       title: "Add New Media",
       description: "Upload movies, series, or documentaries",
       icon: PlusCircle,
-      href: "/dashboard/media/add",
+      href: "/dashboard/media",
       color: "from-green-500 to-emerald-500",
       bgHover: "hover:bg-gradient-to-r hover:from-green-500/10 hover:to-emerald-500/10",
     },
@@ -156,7 +143,7 @@ export default function AdminDashboard() {
       title: "Moderate Reviews",
       description: `${stats.pendingReviews} pending reviews to check`,
       icon: MessageSquare,
-      href: "/admin/reviews",
+      href: "/dashboard/reviews",
       color: "from-yellow-500 to-orange-500",
       bgHover: "hover:bg-gradient-to-r hover:from-yellow-500/10 hover:to-orange-500/10",
     },
@@ -168,13 +155,6 @@ export default function AdminDashboard() {
       color: "from-purple-500 to-pink-500",
       bgHover: "hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10",
     },
-  ];
-
-  const recentActivities = [
-    { action: "New user registered", time: "2 minutes ago", icon: Users, color: "text-green-400" },
-    { action: "Movie 'Dune 2' added", time: "1 hour ago", icon: Film, color: "text-blue-400" },
-    { action: "5 new reviews pending", time: "3 hours ago", icon: Star, color: "text-yellow-400" },
-    { action: "System backup completed", time: "5 hours ago", icon: Activity, color: "text-purple-400" },
   ];
 
   const formatTime = () => {

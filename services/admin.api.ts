@@ -34,7 +34,7 @@ export const approveReview = async (id: string) => {
 };
 
 export const deleteReview = async (id: string) => {
-  return api.delete(`/review/unpublish/${id}`);
+  return api.patch(`/review/unpublish/${id}`);
 };
 
 export const getAllComments = async () => {

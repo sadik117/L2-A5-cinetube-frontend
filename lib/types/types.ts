@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface User {
   id: string;
@@ -81,4 +82,41 @@ export interface CreateReviewData {
   content: string;
   tags: string[];
   isSpoiler: boolean;
+}
+
+
+export interface DashboardStats {
+  totalMedia: number;
+  totalUsers: number;
+  totalReviews: number;
+  totalComments: number;
+  averageRating: number;
+  pendingReviews: number;
+  trendingMedia: number;
+  monthlyGrowth?: number;
+  activeUsers?: number;
+  recentActivities?: any[];
+}
+
+
+export interface Review {
+  id: string;
+  content: string;
+  rating: number;
+  isApproved: boolean;
+  isSpoiler: boolean;   
+  tags: string[]; 
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string;
+  };
+  media?: {
+    id: string;
+    title: string;
+    type: string;
+  };
 }

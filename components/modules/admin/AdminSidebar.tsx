@@ -19,14 +19,13 @@ import {
   ChevronRight,
   Menu,
   X,
-  Shield,
   Home,
 } from "lucide-react";
-import { useAuth } from "@/components/providers/auth-provider";
-import Image from "next/image";
+
 
 const adminNav = [
   { href: "/", label: "Home", icon: Home, color: "text-blue-500" },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-500" },
   { href: "/dashboard/media", label: "Manage Media", icon: Film, color: "text-purple-500" },
   { href: "/dashboard/reviews", label: "Reviews", icon: MessageSquare, color: "text-yellow-500" },
   { href: "/dashboard/comments", label: "Comments", icon: Users, color: "text-green-500" },

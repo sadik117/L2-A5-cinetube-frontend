@@ -379,8 +379,8 @@ export default function ManageMediaPage() {
               className="flex-1 md:flex-none px-3 md:px-4 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               <option value="all">All Types</option>
-              <option value="movie">Movies</option>
-              <option value="series">TV Series</option>
+              <option value="Movie">Movies</option>
+              <option value="Series">TV Series</option>
             </select>
             <select
               value={filterPrice}
@@ -440,12 +440,12 @@ export default function ManageMediaPage() {
                 className="group bg-gray-900/50 rounded-xl md:rounded-2xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-300 hover:transform hover:-translate-y-1"
               >
                 {/* Image */}
-                <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden bg-gray-800">
+                <div className="relative h-48 md:h-56 overflow-hidden bg-gray-800">
                   {media.coverImage ? (
                     <Image
                       src={media.coverImage}
                       alt={media.title}
-                      fill   
+                     fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
