@@ -120,3 +120,22 @@ export interface Review {
     type: string;
   };
 }
+
+export interface Comment {
+  id: string;
+  content: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  review?: {
+    id: string;
+    mediaTitle?: string;
+    rating: number;
+    content: string;
+  };
+  isApproved: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
