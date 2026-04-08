@@ -1,7 +1,7 @@
+import FeaturedMediaSection from "@/components/layouts/sections/FeaturedMediaSection";
 import HeroSection from "@/components/layouts/sections/HeroSection";
 import PricingSection from "@/components/layouts/sections/PricingSection";
 import ReviewsSection from "@/components/layouts/sections/ReviewSection";
-import { meta } from "zod/v4/core";
 
 
 export const dynamic = "force-dynamic";
@@ -15,6 +15,7 @@ export default function Home() {
   return (
     <div>
        <HeroSection></HeroSection>
+       <FeaturedMediaSection></FeaturedMediaSection>
        <ReviewsSection></ReviewsSection>
        <PricingSection></PricingSection>
     </div>

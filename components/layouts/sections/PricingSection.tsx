@@ -93,7 +93,7 @@ export default function PricingSection() {
   });
 
   return (
-    <section className="py-16 bg-white dark:bg-gray-950">
+    <section className="py-14 bg-gradient-to-b from-black to-gray-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
