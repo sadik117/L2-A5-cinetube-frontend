@@ -5,10 +5,7 @@ import Link from "next/link";
 import {
   Film,
   Tv,
-  Star,
   Mail,
-  Phone,
-  MapPin,
   Facebook,
   Twitter,
   Instagram,
@@ -17,7 +14,6 @@ import {
   Heart,
   Award,
   Clock,
-  TrendingUp,
   Shield,
   CreditCard,
   Headphones,
@@ -47,22 +43,17 @@ export default function Footer() {
     explore: [
       { name: "Movies", href: "/movies", icon: Film },
       { name: "TV Series", href: "/series", icon: Tv },
-      { name: "Top Rated", href: "/top-rated", icon: Star },
-      { name: "Trending Now", href: "/trending", icon: TrendingUp },
-      { name: "New Releases", href: "/new-releases", icon: Sparkles },
+      { name: "Wishlist", href: "/wishlist", icon: Heart },
     ],
     support: [
-      { name: "Help Center", href: "/help", icon: Headphones },
-      { name: "Contact Us", href: "/contact", icon: Mail },
       { name: "FAQ", href: "/faq", icon: Clock },
+      { name: "Contact Us", href: "/contact", icon: Mail },
       { name: "Privacy Policy", href: "/privacy", icon: Shield },
-      { name: "Terms of Service", href: "/terms", icon: Award },
+
     ],
     company: [
       { name: "About Us", href: "/about" },
-      { name: "Careers", href: "/careers" },
-      { name: "Advertising", href: "/advertise" },
-      { name: "Blog", href: "/blog" },
+      { name: "Terms of Service", href: "/terms", icon: Award },
     ],
   };
 
@@ -79,31 +70,31 @@ export default function Footer() {
     {
       name: "Facebook",
       icon: Facebook,
-      href: "https://facebook.com",
+      href: "https://www.facebook.com/sadiksourov11/",
       color: "hover:bg-[#1877f2]",
     },
     {
       name: "Twitter",
       icon: Twitter,
-      href: "https://twitter.com",
+      href: "https://x.com/sadiksourov117",
       color: "hover:bg-[#1da1f2]",
     },
     {
       name: "Instagram",
       icon: Instagram,
-      href: "https://instagram.com",
+      href: "https://www.instagram.com/sadiksourov11/",
       color: "hover:bg-linear-to-r from-[#833ab4] to-[#fd1d1d]",
     },
     {
       name: "LinkedIn",
       icon: Linkedin,
-      href: "https://linkedin.com",
+      href: "https://linkedin.com/in/sadiksourov11",
       color: "hover:bg-[#0077b5]",
     },
     {
       name: "GitHub",
       icon: Github,
-      href: "https://github.com",
+      href: "https://github.com/sadik117",
       color: "hover:bg-gray-700 dark:hover:bg-gray-600",
     },
   ];

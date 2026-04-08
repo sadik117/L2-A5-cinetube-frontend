@@ -410,13 +410,13 @@ export default function FAQPage() {
                       <Mail className="w-4 h-4" />
                       Contact Support
                     </Link>
-                    <Link
-                      href="/live-chat"
+                    <p
+                      
                       className="inline-flex items-center gap-2 px-5 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-700 transition"
                     >
                       <MessageCircle className="w-4 h-4" />
                       Live Chat
-                    </Link>
+                    </p>
                   </div>
                 </div>
               )}
