@@ -6,11 +6,26 @@ import Link from "next/link";
 import { Star, Calendar, Film, Eye, Heart } from "lucide-react";
 import { useState } from "react";
 import { MediaCardProps } from "@/lib/types/types";
+import { useAuth } from "@/components/providers/auth-provider";
+import { useRouter } from "next/navigation";
 
 
 export default function MediaCard({ item }: MediaCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
+  const router = useRouter();
+  const {user, loading} = useAuth();
+
+  const handleNavigate = () => {
+    if (loading) return; // prevent early redirect
+
+    if (user) {
+      router.push(`/movies/${item.id}`);
+    } else {
+      router.push("/login");
+    }
+  };
 
   const formatRating = (rating: number) => {
     return rating?.toFixed(1) || "0.0";
@@ -23,8 +38,8 @@ export default function MediaCard({ item }: MediaCardProps) {
   };
 
   return (
-    <Link href={`/movies/${item.id}`}>
       <div
+      onClick={handleNavigate}
         className="group relative bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -40,14 +55,14 @@ export default function MediaCard({ item }: MediaCardProps) {
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
           />
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* linear Overlay */}
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Hover Info */}
           <div className="absolute inset-0 flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="space-y-2">
               {/* Watch Now Button */}
-              <button className="w-full py-2 bg-gradient-to-r from-red-500 to-purple-600 text-white text-xs font-semibold rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+              <button className="w-full py-2 bg-linear-to-r from-red-500 to-purple-600 text-white text-xs font-semibold rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                 Watch Now
               </button>
               
@@ -117,10 +132,9 @@ export default function MediaCard({ item }: MediaCardProps) {
 
           {/* Progress Bar (Optional) */}
           {isHovered && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500 to-purple-600 animate-slideIn" />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-red-500 to-purple-600 animate-slideIn" />
           )}
         </div>
       </div>
-    </Link>
   );
 }

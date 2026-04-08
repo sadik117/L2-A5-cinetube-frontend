@@ -180,7 +180,7 @@ export default function RegisterForm() {
       {/* Profile Image Upload Section */}
       <div className="flex justify-center">
         <div className="relative">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-r from-red-500 to-purple-600 p-0.5">
+          <div className="w-24 h-24 rounded-full bg-linear-to-r from-red-500 to-purple-600 p-0.5">
             {imagePreview ? (
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <Image
@@ -206,7 +206,7 @@ export default function RegisterForm() {
 
           <label
             htmlFor="image-upload"
-            className="absolute bottom-0 right-0 bg-gradient-to-r from-red-500 to-purple-600 rounded-full p-1.5 cursor-pointer hover:shadow-lg transition-all duration-300"
+            className="absolute bottom-0 right-0 bg-linear-to-r from-red-500 to-purple-600 rounded-full p-1.5 cursor-pointer hover:shadow-lg transition-all duration-300"
           >
             <Upload className="w-4 h-4 text-white" />
             <input
@@ -419,7 +419,7 @@ export default function RegisterForm() {
       <button
         type="submit"
         disabled={isRegistering}
-        className="w-full bg-gradient-to-r from-red-500 to-purple-600 text-white py-2.5 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
+        className="w-full bg-linear-to-r from-red-500 to-purple-600 text-white py-2.5 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
       >
         {isRegistering ? (
           <>

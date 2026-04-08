@@ -92,7 +92,7 @@ export default function Footer() {
       name: "Instagram",
       icon: Instagram,
       href: "https://instagram.com",
-      color: "hover:bg-gradient-to-r from-[#833ab4] to-[#fd1d1d]",
+      color: "hover:bg-linear-to-r from-[#833ab4] to-[#fd1d1d]",
     },
     {
       name: "LinkedIn",
@@ -115,7 +115,7 @@ export default function Footer() {
         {showScrollTop && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 z-50 p-3 bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 animate-bounce"
+            className="fixed bottom-8 right-8 z-50 p-3 bg-linear-to-r from-red-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 animate-bounce"
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-5 h-5" />
@@ -130,12 +130,12 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <Link href="/" className="flex items-center space-x-2 group mb-4">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
-                  <div className="relative bg-gradient-to-r from-red-500 to-purple-600 rounded-lg p-2">
+                  <div className="absolute inset-0 bg-linear-to-r from-red-500 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                  <div className="relative bg-linear-to-r from-red-500 to-purple-600 rounded-lg p-2">
                     <Film className="w-6 h-6 text-white" />
                   </div>
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-linear-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
                   CineTube
                 </span>
               </Link>
@@ -249,7 +249,7 @@ export default function Footer() {
               {streamingPartners.map((partner) => (
                 <div
                   key={partner.name}
-                  className={`px-4 py-2 bg-gradient-to-r ${partner.color} rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer`}
+                  className={`px-4 py-2 bg-linear-to-r ${partner.color} rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer`}
                 >
                   <span className="text-white text-sm font-semibold">
                     {partner.name}
@@ -269,7 +269,7 @@ export default function Footer() {
               </div>
 
               <div className="flex items-center space-x-6 text-sm">
-                <div className="flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-[#635bff] to-[#0f0e1a] rounded-lg">
+                <div className="flex items-center space-x-2 px-3 py-1.5 bg-linear-to-r from-[#635bff] to-[#0f0e1a] rounded-lg">
                   <CreditCard className="w-3.5 h-3.5 text-white" />
                   <span className="text-white text-xs font-medium">
                     Powered by Stripe

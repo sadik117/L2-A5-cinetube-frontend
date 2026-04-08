@@ -7,7 +7,7 @@ export default function CancelPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-gray-900 dark:via-red-900/20 dark:to-gray-900 flex items-center justify-center mt-10 px-4 py-12">
+    <div className="min-h-screen bg-linear-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-gray-900 dark:via-red-900/20 dark:to-gray-900 flex items-center justify-center mt-10 px-4 py-12">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-red-500/10 rounded-full blur-3xl animate-pulse" />
@@ -27,20 +27,20 @@ export default function CancelPage() {
         {/* Cancel Card */}
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden animate-fadeInUp">
           {/* Top Decoration */}
-          <div className="h-2 bg-gradient-to-r from-red-500 to-orange-500" />
+          <div className="h-2 bg-linear-to-r from-red-500 to-orange-500" />
           
           {/* Content */}
           <div className="p-8 md:p-12 text-center">
             {/* Cancel Animation */}
             <div className="relative w-24 h-24 mx-auto mb-6">
               <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-75" />
-              <div className="relative w-24 h-24 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center animate-bounce-in">
+              <div className="relative w-24 h-24 bg-linear-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center animate-bounce-in">
                 <XCircle className="w-12 h-12 text-white" />
               </div>
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent mb-3">
+            <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-red-600 to-orange-600 bg-clip-text text-transparent mb-3">
               Payment Cancelled
             </h1>
             
@@ -50,7 +50,7 @@ export default function CancelPage() {
             </p>
 
             {/* Help Message */}
-            <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-2xl p-6 mb-8">
+            <div className="bg-linear-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-2xl p-6 mb-8">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center justify-center gap-2">
                 <Heart className="w-5 h-5 text-red-500" />
                 Need help?
@@ -99,7 +99,7 @@ export default function CancelPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
               <button
                 onClick={() => router.push("/subscription")}
-                className="px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-red-500 to-orange-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
               >
                 <RefreshCw className="w-4 h-4" />
                 Try Again

@@ -28,11 +28,12 @@ import {
 } from "lucide-react";
 import { Media } from "@/lib/types/types";
 import Image from "next/image";
+import Pagination from "@/components/Pagination";
+import { useMedia } from "@/hooks/useMovie";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ManageMediaPage() {
-  const [mediaList, setMediaList] = useState<Media[]>([]);
-  const [filteredList, setFilteredList] = useState<Media[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingMedia, setEditingMedia] = useState<Media | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -44,9 +45,26 @@ export default function ManageMediaPage() {
     "all",
   );
 
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const queryClient = useQueryClient();
+
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 10,
+    search: "",
+    type: "all",
+    priceType: "all",
+  });
+
+  const { data, isLoading, isFetching } = useMediaQuery({
+    page: params.page,
+    limit: params.limit,
+    search: params.search,
+    type: params.type !== "all" ? params.type : undefined,
+    priceType: params.priceType !== "all" ? params.priceType : undefined,
+  });
+
+  const mediaList: Media[] = data?.data || [];
+  const meta = data?.meta || {};
 
   // Form data
   const [formData, setFormData] = useState<{
@@ -92,61 +110,6 @@ export default function ManageMediaPage() {
     "Horror",
   ];
 
-  useEffect(() => {
-    fetchMedia();
-  }, []);
-
-  useEffect(() => {
-    let filtered = [...mediaList];
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (media) =>
-          media.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          media.director?.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-    }
-
-    if (filterType !== "all") {
-      filtered = filtered.filter((media) => media.type === filterType);
-    }
-
-    if (filterPrice !== "all") {
-      filtered = filtered.filter((media) => media.priceType === filterPrice);
-    }
-
-    setFilteredList(filtered);
-    setCurrentPage(1); // reset to first page when filters change
-  }, [searchTerm, filterType, filterPrice, mediaList]);
-
-  const fetchMedia = async () => {
-    setLoading(true);
-    try {
-      const data = await getAllMedia();
-      const mediaArray = Array.isArray(data) ? data : data?.data || [];
-      setMediaList(mediaArray);
-      setFilteredList(mediaArray);
-    } catch (error) {
-      console.error("Failed to fetch media:", error);
-      toast.error("Failed to load media list");
-      setMediaList([]);
-      setFilteredList([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Pagination calculations
-  const totalPages = Math.ceil(filteredList.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = filteredList.slice(startIndex, endIndex);
-
-  const goToPage = (page: number) => {
-    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -154,44 +117,52 @@ export default function ManageMediaPage() {
     try {
       const form = new FormData();
 
-      form.append("title", formData.title);
-      form.append("type", formData.type);
-      form.append("priceType", formData.priceType);
-      form.append("releaseYear", String(formData.releaseYear));
-      form.append("director", formData.director || "");
-      form.append("synopsis", formData.synopsis || "");
-      form.append("platform", formData.platform || "");
-      form.append("youtubeLink", formData.youtubeLink || "");
-
-      form.append("cast", JSON.stringify(formData.cast || []));
-      form.append("genre", JSON.stringify(formData.genre || []));
-
-      // Handle cover image safely
-      if (formData.coverImage instanceof File) {
-        form.append("coverImage", formData.coverImage);
-      } else if (editingMedia?.coverImage) {
-        form.append("coverImage", editingMedia.coverImage); // Keep existing image
-      }
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === "cast" || key === "genre") {
+          form.append(key, JSON.stringify(value));
+        } else if (key === "coverImage") {
+          if (value instanceof File) {
+            form.append("coverImage", value);
+          }
+        } else {
+          form.append(key, value as string);
+        }
+      });
 
       if (editingMedia) {
-        console.log("Updating media ID:", editingMedia.id);
         await updateMedia(editingMedia.id, form);
-        toast.success("Media updated successfully");
+        toast.success("Media updated");
       } else {
         await createMedia(form);
-        toast.success("Media created successfully");
+        toast.success("Media created");
       }
+
+      queryClient.invalidateQueries({ queryKey: ["media"] });
 
       setShowForm(false);
       setEditingMedia(null);
-      resetForm();
-      fetchMedia();
-    } catch (error: any) {
-      console.error("Submit error:", error);
-      toast.error(error.response?.data?.message || "Failed to save media");
+    } catch (err: any) {
+      toast.error("Failed to save media!!");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this media?")) return;
+
+    await deleteMedia(id);
+    queryClient.invalidateQueries({ queryKey: ["media"] });
+    toast.success("Deleted");
+  };
+
+  const handleEdit = (media: Media) => {
+    setEditingMedia(media);
+    setFormData({
+      ...media,
+      coverImage: media.coverImage ?? null,
+    });
+    setShowForm(true);
   };
 
   const resetForm = () => {
@@ -210,46 +181,6 @@ export default function ManageMediaPage() {
     });
     setNewCastMember("");
     setNewGenre("");
-  };
-
-  const handleEdit = (media: Media) => {
-    if (!media || !media.id) {
-      toast.error("Invalid media data");
-      return;
-    }
-
-    setEditingMedia(media);
-    setFormData({
-      title: media.title || "",
-      type: media.type || "Movie",
-      priceType: media.priceType || "Free",
-      releaseYear: media.releaseYear || new Date().getFullYear(),
-      director: media.director || "",
-      synopsis: media.synopsis || "",
-      platform: media.platform || "",
-      youtubeLink: media.youtubeLink || "",
-      cast: Array.isArray(media.cast) ? media.cast : [],
-      genre: Array.isArray(media.genre) ? media.genre : [],
-      coverImage: media.coverImage || null,
-    });
-    setShowForm(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (
-      !confirm(
-        "Are you sure you want to delete this media? This action cannot be undone.",
-      )
-    )
-      return;
-
-    try {
-      await deleteMedia(id);
-      toast.success("Media deleted successfully");
-      fetchMedia();
-    } catch (error) {
-      toast.error("Failed to delete media");
-    }
   };
 
   const addCastMember = () => {
@@ -277,20 +208,17 @@ export default function ManageMediaPage() {
   };
 
   const stats = {
-    total: mediaList.length,
+    total: mediaList.length || 0,
     movies: mediaList.filter((m) => m.type === "Movie").length,
     series: mediaList.filter((m) => m.type === "Series").length,
     premium: mediaList.filter((m) => m.priceType === "Premium").length,
   };
 
-  // Items per page options
-  const itemsPerPageOptions = [10, 15, 20, 25, 30];
-
   return (
     <div className="space-y-4 md:space-y-6 mt-14 ml-0 md:ml-56">
       {/* Header Stats - Responsive Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-        <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-blue-500/20">
+        <div className="bg-linear-to-br from-blue-500/10 to-blue-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-blue-500/20">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs md:text-sm text-blue-400">Total Media</p>
@@ -301,7 +229,7 @@ export default function ManageMediaPage() {
             <Film className="w-6 h-6 md:w-8 md:h-8 text-blue-400 opacity-50" />
           </div>
         </div>
-        <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-purple-500/20">
+        <div className="bg-linear-to-br from-purple-500/10 to-purple-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-purple-500/20">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs md:text-sm text-purple-400">Movies</p>
@@ -312,7 +240,7 @@ export default function ManageMediaPage() {
             <Film className="w-6 h-6 md:w-8 md:h-8 text-purple-400 opacity-50" />
           </div>
         </div>
-        <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-green-500/20">
+        <div className="bg-linear-to-br from-green-500/10 to-green-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-green-500/20">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs md:text-sm text-green-400">TV Series</p>
@@ -323,7 +251,7 @@ export default function ManageMediaPage() {
             <TrendingUp className="w-6 h-6 md:w-8 md:h-8 text-green-400 opacity-50" />
           </div>
         </div>
-        <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-red-500/20">
+        <div className="bg-linear-to-br from-red-500/10 to-red-600/10 rounded-xl md:rounded-2xl p-3 md:p-4 border border-red-500/20">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs md:text-sm text-red-400">Premium Content</p>
@@ -352,7 +280,7 @@ export default function ManageMediaPage() {
             resetForm();
             setShowForm(true);
           }}
-          className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-purple-600 hover:shadow-lg hover:shadow-red-500/25 px-4 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl font-semibold text-sm md:text-base transition-all duration-300 transform hover:scale-105 w-full sm:w-auto justify-center"
+          className="flex items-center gap-2 bg-linear-to-r from-red-500 to-purple-600 hover:shadow-lg hover:shadow-red-500/25 px-4 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl font-semibold text-sm md:text-base transition-all duration-300 transform hover:scale-105 w-full sm:w-auto justify-center"
         >
           <Plus className="w-4 h-4 md:w-5 md:h-5" />
           Add New Media
@@ -368,14 +296,29 @@ export default function ManageMediaPage() {
               type="text"
               placeholder="Search by title or director..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setParams((prev) => ({
+                  ...prev,
+                  page: 1,
+                  search: e.target.value,
+                }));
+              }}
               className="w-full pl-9 pr-3 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
           <div className="flex gap-3">
             <select
               value={filterType}
-              onChange={(e) => setFilterType(e.target.value as any)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFilterType(value as any);
+                setParams((prev) => ({
+                  ...prev,
+                  page: 1,
+                  type: value,
+                }));
+              }}
               className="flex-1 md:flex-none px-3 md:px-4 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               <option value="all">All Types</option>
@@ -384,7 +327,15 @@ export default function ManageMediaPage() {
             </select>
             <select
               value={filterPrice}
-              onChange={(e) => setFilterPrice(e.target.value as any)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFilterPrice(value as any);
+                setParams((prev) => ({
+                  ...prev,
+                  page: 1,
+                  priceType: value,
+                }));
+              }}
               className="flex-1 md:flex-none px-3 md:px-4 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               <option value="all">All Prices</option>
@@ -395,35 +346,12 @@ export default function ManageMediaPage() {
         </div>
       </div>
 
-      {/* Items Per Page Selector */}
-      {filteredList.length > 0 && (
-        <div className="flex justify-end">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">Show:</span>
-            <select
-              value={itemsPerPage}
-              onChange={(e) => {
-                setItemsPerPage(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-              className="px-2 py-1 text-xs bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              {itemsPerPageOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      )}
-
       {/* Media Grid - Responsive */}
-      {loading ? (
+      {isLoading ? (
         <div className="flex justify-center py-20">
           <Loader2 className="w-8 h-8 animate-spin text-red-500" />
         </div>
-      ) : filteredList.length === 0 ? (
+      ) : mediaList.length === 0 ? (
         <div className="bg-gray-900/50 rounded-2xl md:rounded-3xl border border-gray-800 text-center py-12 md:py-20">
           <Film className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 text-gray-600" />
           <p className="text-gray-400 text-base md:text-lg">No media found</p>
@@ -434,7 +362,7 @@ export default function ManageMediaPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5">
-            {currentItems.map((media) => (
+            {mediaList.map((media) => (
               <div
                 key={media.id}
                 className="group bg-gray-900/50 rounded-xl md:rounded-2xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-300 hover:transform hover:-translate-y-1"
@@ -445,7 +373,7 @@ export default function ManageMediaPage() {
                     <Image
                       src={media.coverImage}
                       alt={media.title}
-                     fill
+                      fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
@@ -471,7 +399,7 @@ export default function ManageMediaPage() {
                     <span
                       className={`px-1.5 md:px-2 py-0.5 rounded-full text-[10px] md:text-xs font-medium ${
                         media.priceType === "Premium"
-                          ? "bg-gradient-to-r from-red-500 to-purple-600"
+                          ? "bg-linear-to-r from-red-500 to-purple-600"
                           : "bg-green-500"
                       }`}
                     >
@@ -509,7 +437,7 @@ export default function ManageMediaPage() {
           </div>
 
           {/* Pagination - Responsive */}
-          {totalPages > 1 && (
+          {/* {totalPages > 1 && (
             <div className="flex justify-center mt-6 md:mt-8">
               <div className="flex items-center gap-1 md:gap-2 flex-wrap justify-center">
                 <button
@@ -528,9 +456,9 @@ export default function ManageMediaPage() {
                 </button>
 
                 <div className="flex gap-1 md:gap-2">
-                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  {Array.from({ length: Math.min(10, totalPages) }, (_, i) => {
                     let pageNum;
-                    if (totalPages <= 5) {
+                    if (totalPages <= 10) {
                       pageNum = i + 1;
                     } else if (currentPage <= 3) {
                       pageNum = i + 1;
@@ -546,7 +474,7 @@ export default function ManageMediaPage() {
                         onClick={() => goToPage(pageNum)}
                         className={`w-7 h-7 md:w-9 md:h-9 text-xs md:text-sm rounded-lg transition ${
                           currentPage === pageNum
-                            ? "bg-gradient-to-r from-red-500 to-purple-600 text-white"
+                            ? "bg-linear-to-r from-red-500 to-purple-600 text-white"
                             : "bg-gray-800 hover:bg-gray-700 text-gray-300"
                         }`}
                       >
@@ -572,13 +500,9 @@ export default function ManageMediaPage() {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
 
-          {/* Results Info */}
-          <div className="text-center text-xs text-gray-500 mt-4">
-            Showing {startIndex + 1} - {Math.min(endIndex, filteredList.length)}{" "}
-            of {filteredList.length} results
-          </div>
+          <Pagination meta={meta} params={params} setParams={setParams} />
         </>
       )}
 
@@ -877,7 +801,7 @@ export default function ManageMediaPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 py-2 md:py-3 bg-gradient-to-r from-red-500 to-purple-600 rounded-lg md:rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-red-500/25 transition-all disabled:opacity-70"
+                  className="flex-1 py-2 md:py-3 bg-linear-to-r from-red-500 to-purple-600 rounded-lg md:rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-red-500/25 transition-all disabled:opacity-70"
                 >
                   {submitting ? (
                     <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin mx-auto" />

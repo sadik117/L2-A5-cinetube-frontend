@@ -91,7 +91,7 @@ export default function AdminHeader() {
                 <div className="hidden md:flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 </div>
-                <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-lg md:text-2xl font-bold bg-linear-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
                   Admin Dashboard
                 </h1>
               </div>
@@ -189,7 +189,7 @@ export default function AdminHeader() {
                         className="rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700 group-hover:ring-red-500 transition-all"
                       />
                     ) : (
-                      <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg ring-2 ring-gray-200 dark:ring-gray-700 group-hover:ring-red-500 transition-all">
+                      <div className="w-8 h-8 bg-linear-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg ring-2 ring-gray-200 dark:ring-gray-700 group-hover:ring-red-500 transition-all">
                         {user?.name?.[0]?.toUpperCase() || "A"}
                       </div>
                     )}
@@ -223,7 +223,7 @@ export default function AdminHeader() {
                             className="rounded-full object-cover"
                           />
                         ) : (
-                          <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                          <div className="w-12 h-12 bg-linear-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
                             {user?.name?.[0]?.toUpperCase() || "A"}
                           </div>
                         )}

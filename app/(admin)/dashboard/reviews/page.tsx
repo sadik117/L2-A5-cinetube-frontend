@@ -208,7 +208,7 @@ export default function ReviewsPage() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
-            <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl lg:text-4xl font-bold bg-linear-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent">
               Review Moderation
             </h1>
             <p className="text-gray-400 mt-1">
@@ -226,7 +226,7 @@ export default function ReviewsPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Total Reviews</p>
@@ -240,7 +240,7 @@ export default function ReviewsPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Approved</p>
@@ -254,7 +254,7 @@ export default function ReviewsPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Pending</p>
@@ -268,7 +268,7 @@ export default function ReviewsPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Average Rating</p>
@@ -284,7 +284,7 @@ export default function ReviewsPage() {
         </div>
 
         {/* Filters Bar */}
-        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 overflow-hidden">
+        <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 overflow-hidden">
           <div className="p-4">
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search */}
@@ -384,7 +384,7 @@ export default function ReviewsPage() {
         {/* Reviews List */}
         <div className="space-y-4">
           {filteredReviews.length === 0 ? (
-            <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-12 text-center">
+            <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-12 text-center">
               <div className="inline-flex p-4 bg-gray-800 rounded-full mb-4">
                 <MessageSquare className="w-8 h-8 text-gray-600" />
               </div>
@@ -401,7 +401,7 @@ export default function ReviewsPage() {
             filteredReviews.map((review) => (
               <div
                 key={review.id}
-                className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300 overflow-hidden"
+                className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300 overflow-hidden"
               >
                 <div className="p-6">
                   <div className="flex flex-col lg:flex-row justify-between gap-4">
@@ -432,7 +432,7 @@ export default function ReviewsPage() {
 
                       <div className="flex flex-wrap items-center gap-4 text-sm">
                         <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                          <div className="w-6 h-6 bg-linear-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
                             <User className="w-3 h-3 text-white" />
                           </div>
                           <span className="text-gray-300">
@@ -516,10 +516,10 @@ export default function ReviewsPage() {
           onClick={() => setShowDetailsModal(false)}
         >
           <div
-            className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-gray-700"
+            className="bg-linear-to-br from-gray-900 to-gray-800 rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-gray-700"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 bg-gradient-to-br from-gray-900 to-gray-800 p-6 border-b border-gray-700 z-10">
+            <div className="sticky top-0 bg-linear-to-br from-gray-900 to-gray-800 p-6 border-b border-gray-700 z-10">
               <div className="flex justify-between items-start">
                 <div>
                   <h2 className="text-2xl font-bold text-white">

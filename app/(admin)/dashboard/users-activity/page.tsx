@@ -120,8 +120,8 @@ export default function UsersActivityPage() {
       .slice(0, 2);
   };
 
-  const getRandomGradient = (id: string) => {
-    const gradients = [
+  const getRandomlinear = (id: string) => {
+    const linears = [
       "from-purple-500 to-pink-500",
       "from-blue-500 to-cyan-500",
       "from-green-500 to-emerald-500",
@@ -129,8 +129,8 @@ export default function UsersActivityPage() {
       "from-indigo-500 to-purple-500",
       "from-pink-500 to-rose-500",
     ];
-    const index = parseInt(id.slice(-1)) % gradients.length || 0;
-    return gradients[index];
+    const index = parseInt(id.slice(-1)) % linears.length || 0;
+    return linears[index];
   };
 
   if (loading) {
@@ -155,7 +155,7 @@ export default function UsersActivityPage() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
-            <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl lg:text-4xl font-bold bg-linear-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
               User Activity
             </h1>
             <p className="text-gray-400 mt-1">
@@ -173,7 +173,7 @@ export default function UsersActivityPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Total Users</p>
@@ -187,7 +187,7 @@ export default function UsersActivityPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Active Users</p>
@@ -201,7 +201,7 @@ export default function UsersActivityPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Total Reviews</p>
@@ -215,7 +215,7 @@ export default function UsersActivityPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
+          <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl p-4 border border-gray-800">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Total Comments</p>
@@ -231,7 +231,7 @@ export default function UsersActivityPage() {
         </div>
 
         {/* Filters Bar */}
-        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 overflow-hidden">
+        <div className="bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 overflow-hidden">
           <div className="p-4">
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="flex-1 relative">
@@ -276,7 +276,7 @@ export default function UsersActivityPage() {
         {/* Users Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredUsers.length === 0 ? (
-            <div className="col-span-full bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-12 text-center">
+            <div className="col-span-full bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-12 text-center">
               <div className="inline-flex p-4 bg-gray-800 rounded-full mb-4">
                 <Users className="w-8 h-8 text-gray-600" />
               </div>
@@ -293,13 +293,13 @@ export default function UsersActivityPage() {
             filteredUsers.map((user) => (
               <div
                 key={user.id}
-                className="group bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300 overflow-hidden"
+                className="group bg-linear-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300 overflow-hidden"
               >
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-12 h-12 bg-gradient-to-br ${getRandomGradient(
+                        className={`w-12 h-12 bg-linear-to-br ${getRandomlinear(
                           user.id,
                         )} rounded-xl flex items-center justify-center text-white font-bold text-lg`}
                       >
@@ -384,11 +384,11 @@ export default function UsersActivityPage() {
           onClick={() => setShowDetailsModal(false)}
         >
           <div
-            className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto border border-gray-700"
+            className="bg-linear-to-br from-gray-900 to-gray-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto border border-gray-700"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="sticky top-0 bg-gradient-to-br from-gray-900 to-gray-800 p-6 border-b border-gray-700 flex justify-between items-start">
+            <div className="sticky top-0 bg-linear-to-br from-gray-900 to-gray-800 p-6 border-b border-gray-700 flex justify-between items-start">
               <div>
                 <h2 className="text-2xl font-bold text-white">User Details</h2>
                 <p className="text-gray-400 text-sm mt-1">
@@ -407,7 +407,7 @@ export default function UsersActivityPage() {
               {/* Profile */}
               <div className="flex items-center gap-4">
                 <div
-                  className={`w-20 h-20 bg-gradient-to-br ${getRandomGradient(
+                  className={`w-20 h-20 bg-linear-to-br ${getRandomlinear(
                     selectedUser.id,
                   )} rounded-2xl flex items-center justify-center text-white font-bold text-3xl`}
                 >

@@ -161,7 +161,7 @@ export default function MediaDetailsPage() {
           {/* Backdrop Image */}
           <div className="absolute inset-0">
             <Image
-              src={media.coverImage}
+              src={media.coverImage || "/placeholder-image.png"}
               alt={media.title}
               fill
               className="object-cover"
@@ -177,7 +177,7 @@ export default function MediaDetailsPage() {
               {/* Poster */}
               <div className="relative w-40 sm:w-48 md:w-64 rounded-xl overflow-hidden shadow-2xl shadow-black/50 animate-fadeInUp">
                 <Image
-                  src={media.coverImage}
+                  src={media.coverImage || "/placeholder-image.png"}
                   alt={media.title}
                   width={300}
                   height={450}
@@ -219,7 +219,7 @@ export default function MediaDetailsPage() {
                   <div className="flex items-center gap-1">
                     <Film className="w-4 h-4" />
                     <span>
-                      {media.type === "series" ? "TV Series" : "Movie"}
+                      {media.type === "Series" ? "TV Series" : "Movie"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -288,7 +288,7 @@ export default function MediaDetailsPage() {
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <Film className="w-5 h-5 text-red-500" />
-                  About {media.type === "series" ? "the Series" : "the Movie"}
+                  About {media.type === "Series" ? "the Series" : "the Movie"}
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   {media.fullSynopsis || media.synopsis}

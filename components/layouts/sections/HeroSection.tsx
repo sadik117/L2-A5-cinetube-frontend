@@ -141,7 +141,7 @@ export default function HeroSection() {
                 priority={index === 0}
                 sizes="(max-width: 768px) 100vw, 100vw"
               />
-              {/* Overlay Gradients - Enhanced for mobile */}
+              {/* Overlay linears - Enhanced for mobile */}
               <div className="absolute inset-0 bg-linear-to-t from-black via-black/60 to-black/30" />
               <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/40 to-transparent" />
               <div className="absolute inset-0 bg-linear-to-l from-black/20 via-transparent to-transparent" />

@@ -5,12 +5,6 @@ export const getDashboardStats = async () => {
   return res.data;
 };
 
-export const getAllMedia = async () => {
-    const res = await api.get("/movie");
-    // console.log(res);
-    return res.data.data;
-}
-
 export const createMedia = async (data: FormData) => {
   return api.post("/movie", data);
 };

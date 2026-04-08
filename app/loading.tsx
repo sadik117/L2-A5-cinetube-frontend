@@ -45,7 +45,7 @@ export default function Loading({
       case "pulse":
         return (
           <div className="relative">
-            <div className={`${sizeClasses[size]} bg-gradient-to-r from-red-500 to-purple-600 rounded-full animate-pulse`} />
+            <div className={`${sizeClasses[size]} bg-linear-to-r from-red-500 to-purple-600 rounded-full animate-pulse`} />
             <div className="absolute inset-0 flex items-center justify-center">
               <Star className="w-1/2 h-1/2 text-white animate-spin" />
             </div>
@@ -68,7 +68,7 @@ export default function Loading({
             {[0, 1, 2].map((dot) => (
               <div
                 key={dot}
-                className={`${sizeClasses[size]} bg-gradient-to-r from-red-500 to-purple-600 rounded-full animate-bounce`}
+                className={`${sizeClasses[size]} bg-linear-to-r from-red-500 to-purple-600 rounded-full animate-bounce`}
                 style={{ animationDelay: `${dot * 0.15}s` }}
               />
             ))}
@@ -86,7 +86,7 @@ export default function Loading({
             
             {/* Center icon */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <Film className="w-1/2 h-1/2 text-gradient" />
+              <Film className="w-1/2 h-1/2 text-linear" />
             </div>
           </div>
         );
@@ -124,8 +124,8 @@ export default function Loading({
         <div className="relative">
           {/* Animated background circles */}
           <div className="absolute inset-0 -z-10">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-r from-red-500/10 to-purple-500/10 rounded-full animate-ping" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-full animate-pulse" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-linear-to-r from-red-500/10 to-purple-500/10 rounded-full animate-ping" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-linear-to-r from-red-500/20 to-purple-500/20 rounded-full animate-pulse" />
           </div>
           {content}
         </div>

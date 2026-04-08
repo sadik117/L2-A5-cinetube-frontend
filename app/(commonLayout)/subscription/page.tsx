@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSubscription } from "@/hooks/useSubscription";
 import { createCheckoutSession } from "@/services/subscription.api";
-import PageLoading from "@/components/ui/PageLoading";
 import { 
   Crown, 
   Zap, 
@@ -11,23 +10,30 @@ import {
   XCircle, 
   Calendar, 
   CreditCard, 
-  Shield, 
-  Star,
-  Sparkles,
   Film,
   Tv,
-  Headphones,
   Download,
-  Gift,
-  TrendingUp,
   ArrowRight
 } from "lucide-react";
 import Loading from "@/app/loading";
+import { useAuth } from "@/components/providers/auth-provider";
+import { useRouter } from "next/navigation";
 
 export default function SubscriptionPage() {
-  const { subscription, loading } = useSubscription();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<"monthly" | "yearly">("monthly");
+
+  const { subscription, loading: subLoading } = useSubscription();
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push("/login");
+    }
+  }, [authLoading, user, router]);
+
 
   const handleSubscribe = async (plan: "monthly" | "yearly") => {
   try {
@@ -45,16 +51,18 @@ export default function SubscriptionPage() {
   }
 };
 
-
-  if (loading) return <Loading></Loading>;
+  // Show loading while auth or subscription is loading
+  if (authLoading || subLoading || !user) {
+    return <Loading />;
+  }
 
   const isActive = subscription?.status === "active";
   const isExpired = subscription?.status === "expired";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-red-600 to-purple-700 text-white mt-12 py-6 mb-8 overflow-hidden">
+      <div className="relative bg-linear-to-r from-red-600 to-purple-700 text-white mt-12 py-6 mb-8 overflow-hidden">
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl" />
@@ -78,14 +86,14 @@ export default function SubscriptionPage() {
         <div className="mb-12">
           <div className={`rounded-2xl p-6 shadow-lg transition-all ${
             isActive 
-              ? "bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-2 border-green-500"
+              ? "bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-2 border-green-500"
               : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
           }`}>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="flex items-center gap-4">
                 <div className={`p-3 rounded-xl ${
                   isActive 
-                    ? "bg-gradient-to-r from-green-500 to-emerald-600"
+                    ? "bg-linear-to-r from-green-500 to-emerald-600"
                     : "bg-gray-200 dark:bg-gray-700"
                 }`}>
                   {isActive ? (
@@ -146,7 +154,7 @@ export default function SubscriptionPage() {
               onClick={() => setSelectedPlan("monthly")}
               className={`px-6 py-2 rounded-lg font-semibold transition-all duration-300 ${
                 selectedPlan === "monthly"
-                  ? "bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-md"
+                  ? "bg-linear-to-r from-red-500 to-purple-600 text-white shadow-md"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
@@ -156,7 +164,7 @@ export default function SubscriptionPage() {
               onClick={() => setSelectedPlan("yearly")}
               className={`px-6 py-2 rounded-lg font-semibold transition-all duration-300 ${
                 selectedPlan === "yearly"
-                  ? "bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-md"
+                  ? "bg-linear-to-r from-red-500 to-purple-600 text-white shadow-md"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
@@ -217,7 +225,7 @@ export default function SubscriptionPage() {
           </div>
 
           {/* Premium Plan */}
-          <div className={`relative bg-gradient-to-br from-red-50 to-purple-50 dark:from-red-900/20 dark:to-purple-900/20 rounded-2xl shadow-xl overflow-hidden transform scale-105 transition-all duration-300 hover:scale-110 ${
+          <div className={`relative bg-linear-to-br from-red-50 to-purple-50 dark:from-red-900/20 dark:to-purple-900/20 rounded-2xl shadow-xl overflow-hidden transform scale-105 transition-all duration-300 hover:scale-110 ${
             isActive ? "border-2 border-green-500" : ""
           }`}>
             {isActive && (
@@ -226,13 +234,13 @@ export default function SubscriptionPage() {
                 Active
               </div>
             )}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/10 to-purple-500/10 rounded-full blur-2xl" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-red-500/10 to-purple-500/10 rounded-full blur-2xl" />
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-gradient-to-r from-red-500 to-purple-600 rounded-xl">
+                <div className="p-3 bg-linear-to-r from-red-500 to-purple-600 rounded-xl">
                   <Crown className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-xs bg-gradient-to-r from-red-500 to-purple-600 text-white px-2 py-1 rounded-full">
+                <span className="text-xs bg-linear-to-r from-red-500 to-purple-600 text-white px-2 py-1 rounded-full">
                   Recommended
                 </span>
               </div>
@@ -279,7 +287,7 @@ export default function SubscriptionPage() {
                 className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 ${
                   isActive
                     ? "bg-green-500 text-white cursor-default"
-                    : "bg-gradient-to-r from-red-500 to-purple-600 text-white hover:shadow-lg hover:shadow-red-500/25"
+                    : "bg-linear-to-r from-red-500 to-purple-600 text-white hover:shadow-lg hover:shadow-red-500/25"
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {checkoutLoading ? (
@@ -311,7 +319,7 @@ export default function SubscriptionPage() {
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-linear-to-r from-red-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
                 <Film className="w-6 h-6 text-white" />
               </div>
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Unlimited Streaming</h4>
@@ -320,7 +328,7 @@ export default function SubscriptionPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-linear-to-r from-red-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
                 <Tv className="w-6 h-6 text-white" />
               </div>
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">4K Ultra HD</h4>
@@ -329,7 +337,7 @@ export default function SubscriptionPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-linear-to-r from-red-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
                 <Download className="w-6 h-6 text-white" />
               </div>
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Offline Viewing</h4>

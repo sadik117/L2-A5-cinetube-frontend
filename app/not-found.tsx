@@ -4,7 +4,7 @@ import { Home, AlertCircle, Tv } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-purple-600/5 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-background via-primary/5 to-purple-600/5 flex items-center justify-center p-4">
       <div className="relative max-w-4xl w-full">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* Left Column - Illustration */}
@@ -13,8 +13,8 @@ export default function NotFound() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative w-64 h-64 sm:w-80 sm:h-80">
                 {/* Broken Book Illustration */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-600/20 rounded-3xl rotate-6 animate-float" />
-                <div className="absolute inset-0 bg-gradient-to-br from-background to-muted rounded-3xl -rotate-6 flex items-center justify-center shadow-2xl">
+                <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-purple-600/20 rounded-3xl rotate-6 animate-float" />
+                <div className="absolute inset-0 bg-linear-to-br from-background to-muted rounded-3xl -rotate-6 flex items-center justify-center shadow-2xl">
                   <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-2">
                       <Tv className="h-16 w-16 text-primary/30" />
@@ -56,7 +56,7 @@ export default function NotFound() {
             {/* Heading */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold">
               <span className="block text-foreground">Page Not</span>
-              <span className="block bg-gradient-to-r from-destructive via-red-500 to-destructive bg-clip-text text-transparent">
+              <span className="block bg-linear-to-r from-destructive via-red-500 to-destructive bg-clip-text text-transparent">
                 Found
               </span>
             </h1>
@@ -83,7 +83,7 @@ export default function NotFound() {
               <Button 
                 asChild 
                 size="lg" 
-                className="h-12 px-8 text-base font-semibold rounded-full bg-gradient-to-r from-primary to-purple-600 hover:shadow-lg transition-all"
+                className="h-12 px-8 text-base font-semibold rounded-full bg-linear-to-r from-primary to-purple-600 hover:shadow-lg transition-all"
               >
                 <Link href="/">
                   <Home className="mr-2 h-5 w-5" />

@@ -23,12 +23,12 @@ export default function PageLoading() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
       <div className="relative">
         {/* Animated background */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-64 h-64 bg-gradient-to-r from-red-500/10 to-purple-500/10 rounded-full animate-ping" />
-          <div className="absolute w-48 h-48 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-full animate-pulse" />
+          <div className="w-64 h-64 bg-linear-to-r from-red-500/10 to-purple-500/10 rounded-full animate-ping" />
+          <div className="absolute w-48 h-48 bg-linear-to-r from-red-500/20 to-purple-500/20 rounded-full animate-pulse" />
         </div>
 
         {/* Main loader */}
@@ -36,8 +36,8 @@ export default function PageLoading() {
           <div className="flex flex-col items-center space-y-6">
             {/* Animated logo */}
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-purple-600 rounded-full blur-xl animate-pulse" />
-              <div className="relative bg-gradient-to-r from-red-500 to-purple-600 rounded-full p-4">
+              <div className="absolute inset-0 bg-linear-to-r from-red-500 to-purple-600 rounded-full blur-xl animate-pulse" />
+              <div className="relative bg-linear-to-r from-red-500 to-purple-600 rounded-full p-4">
                 <Film className="w-12 h-12 text-white animate-spin-slow" />
               </div>
             </div>
@@ -45,7 +45,7 @@ export default function PageLoading() {
             {/* Progress bar */}
             <div className="w-64 space-y-2">
               <div className="h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-red-500 to-purple-600 rounded-full animate-loading-bar" />
+                <div className="h-full bg-linear-to-r from-red-500 to-purple-600 rounded-full animate-loading-bar" />
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center animate-fadeIn">
                 {loadingMessages[messageIndex]}

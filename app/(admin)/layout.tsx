@@ -39,7 +39,7 @@ export default function AdminLayout({
     return (
       <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-purple-600 rounded-full blur-xl animate-pulse" />
+          <div className="absolute inset-0 bg-linear-to-r from-red-500 to-purple-600 rounded-full blur-xl animate-pulse" />
           <div className="relative w-16 h-16 border-4 border-gray-200 dark:border-gray-700 border-t-red-500 rounded-full animate-spin" />
         </div>
         <p className="ml-4 text-gray-600 dark:text-gray-400 font-medium">Loading admin panel...</p>

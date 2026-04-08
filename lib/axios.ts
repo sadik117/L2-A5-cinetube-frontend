@@ -4,44 +4,41 @@ import axios from "axios";
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
-  timeout: 10000, // optional prevent hanging requests
+  timeout: 15000,
 });
 
-// Flag to prevent multiple refresh attempts at the same time
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: any) => {
   failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
+    if (error) prom.reject(error);
+    else prom.resolve();
   });
   failedQueue = [];
 };
 
 api.interceptors.response.use(
   (response) => response,
+
   async (error) => {
     const originalRequest = error.config;
 
-    // If it's not a 401 or already retried → reject
+    // Not 401 or already retried → reject immediately
     if (error.response?.status !== 401 || originalRequest._retry) {
       return Promise.reject(error);
     }
 
-    // Prevent infinite loop on login/register pages
+    // Skip refresh on auth pages to prevent loops
     if (typeof window !== "undefined") {
-      const currentPath = window.location.pathname;
-      if (currentPath === "/login" || currentPath === "/register") {
+      const path = window.location.pathname;
+      if (path === "/login" || path === "/register") {
         return Promise.reject(error);
       }
     }
 
+    // If a refresh is already in progress, queue this request
     if (isRefreshing) {
-      // Wait for the current refresh to finish
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
       })
@@ -53,23 +50,21 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
+      // Refresh token - we don't need to store the response
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
         {},
-        { withCredentials: true },
+        { withCredentials: true }
       );
 
       processQueue(null);
       return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
-      // Only redirect if we're not already on login page
-      if (error.response?.status !== 401 || originalRequest._retry) {
-        return Promise.reject(error);
-      }
+
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
     }
-  },
+  }
 );

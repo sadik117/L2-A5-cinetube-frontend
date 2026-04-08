@@ -38,7 +38,7 @@ const NavLink = memo(({ href, label, icon: Icon, isActive }: any) => (
     <Icon className="w-4 h-4" />
     <span>{label}</span>
     {isActive && (
-      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500 to-purple-600" />
+      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-red-500 to-purple-600" />
     )}
   </Link>
 ));
@@ -162,11 +162,11 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="bg-gradient-to-r from-red-500 to-purple-600 p-1.5 rounded-lg">
+              <div className="bg-linear-to-r from-red-500 to-purple-600 p-1.5 rounded-lg">
                 <Film className="w-5 h-5 text-white" />
               </div>
               <div>
-                <span className="text-xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
+                <span className="text-xl font-bold bg-linear-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
                   CineTube
                 </span>
                 <p className="text-[10px] text-gray-500 dark:text-gray-400 -mt-1">
@@ -260,7 +260,7 @@ export default function Navbar() {
                           priority
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-red-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                        <div className="w-full h-full bg-linear-to-br from-red-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
                           {user.name?.[0]?.toUpperCase() || "U"}
                         </div>
                       )}
@@ -297,7 +297,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/register"
-                    className="px-5 py-2 bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-full text-sm font-medium"
+                    className="px-5 py-2 bg-linear-to-r from-red-500 to-purple-600 text-white rounded-full text-sm font-medium"
                   >
                     Sign Up
                   </Link>
@@ -381,7 +381,7 @@ export default function Navbar() {
                   <Link
                     href="/register"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-4 text-center bg-gradient-to-r from-red-500 to-purple-600 text-white rounded-2xl font-medium"
+                    className="py-4 text-center bg-linear-to-r from-red-500 to-purple-600 text-white rounded-2xl font-medium"
                   >
                     Sign Up
                   </Link>
