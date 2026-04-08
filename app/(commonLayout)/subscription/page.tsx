@@ -62,7 +62,7 @@ export default function SubscriptionPage() {
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
-      <div className="relative bg-linear-to-r from-red-600 to-purple-700 text-white mt-12 py-6 mb-8 overflow-hidden">
+      <div className="relative bg-linear-to-r from-red-600 to-purple-700 text-white mt-14 py-6 mb-8 overflow-hidden">
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl" />

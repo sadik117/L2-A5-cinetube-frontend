@@ -18,8 +18,8 @@ export default function MoviesPage() {
   const movies = data.filter((item: any) => item.type === "Movie");
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Movies</h1>
+    <div className="p-6 max-w-7xl mx-auto mt-12">
+      <h1 className="text-2xl font-bold mb-4 justify-center items-center flex">Movies</h1>
 
       <FilterBar params={params} setParams={setParams} />
 

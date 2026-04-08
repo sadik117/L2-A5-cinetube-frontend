@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'res.cloudinary.com', // this line for upload posters in cloudinary
       },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc', // this line for upload posters in cloudinary
+      },
     ],
   },
 };

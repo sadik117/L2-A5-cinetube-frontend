@@ -93,13 +93,6 @@ export default function HeroSection() {
     return () => clearInterval(timer);
   }, [isAnimating]);
 
-//   const goToSlide = (index: number) => {
-//     if (isAnimating || index === currentSlide) return;
-//     setIsAnimating(true);
-//     setCurrentSlide(index);
-//     setTimeout(() => setIsAnimating(false), 500);
-//   };
-
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating / 2);
     return (
@@ -120,9 +113,9 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen min-h-150 sm:min-h-150 w-full -mb-36 md:-mb-18 overflow-hidden bg-linear-to-b from-gray-900 to-black">
+    <section className="relative min-h-70 md:min-h-110 w-full overflow-hidden bg-linear-to-b from-gray-900 to-black">
       {/* Background Image Carousel  */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 py-44 md:py-56">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -151,8 +144,8 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 h-full flex items-center">
-        <div className="max-w-7xl mx-auto mb-22 md:mb-8 px-4 sm:px-6 lg:px-8 w-full">
+      <div className="relative z-10 h-full flex items-center mt-24 md:mt-28">
+        <div className="max-w-7xl mx-auto  md:mb-8 px-4 sm:px-6 lg:px-8 w-full">
           {slides.map((slide, index) => (
             <div
               key={slide.id}
@@ -205,70 +198,11 @@ export default function HeroSection() {
                   </span>
                   <span className="hidden sm:block">{slide.description}</span>
                 </p>
-
-                {/* Buttons - Stacked on mobile, row on tablet+ */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <button className="group relative px-6 sm:px-8 py-2.5 sm:py-3 bg-linear-to-r from-red-500 to-purple-600 text-white rounded-full font-semibold text-sm sm:text-base overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25 w-full sm:w-auto">
-                    <span className="relative z-10 flex items-center justify-center space-x-2">
-                      <Play className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span>Watch Now</span>
-                    </span>
-                    <div className="absolute inset-0 bg-linear-to-r from-red-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-                  </button>
-
-                  <Link
-                    href={`/movie/${slide.id}`}
-                    className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-full font-semibold text-sm sm:text-base flex items-center justify-center space-x-2 hover:bg-white/20 transition-all duration-300 hover:scale-105 w-full sm:w-auto"
-                  >
-                    <Info className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span>More Info</span>
-                  </Link>
-                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      {/* Hide scrollbar class */}
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes pulse {
-          0%,
-          100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.5;
-          }
-        }
-
-        .animate-fadeInUp {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .animate-pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-      `}</style>
     </section>
   );
 }

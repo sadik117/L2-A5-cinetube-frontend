@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Mail, ArrowLeft, Send } from "lucide-react";
 import { api } from "@/lib/axios";
@@ -18,7 +17,6 @@ const forgotPasswordSchema = z.object({
 type FormData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
 
@@ -87,7 +85,7 @@ export default function ForgotPasswordPage() {
             Forgot Password?
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm">
-            Enter your email address and we'll send you a link to reset your password.
+            Enter your email address and we&apos;ll send you a link to reset your password.
           </p>
         </div>
 

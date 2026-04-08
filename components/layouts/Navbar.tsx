@@ -9,7 +9,6 @@ import Image from "next/image";
 import {
   Menu,
   X,
-  Search,
   LogOut,
   Film,
   Tv,
@@ -48,8 +47,6 @@ export default function Navbar() {
   const { user, loading, refetchUser } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -86,18 +83,6 @@ export default function Navbar() {
     return () => window.removeEventListener("authChange", handleAuthChange);
   }, [refetchUser]);
 
-  const handleSearch = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      if (searchQuery.trim()) {
-        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-        setSearchQuery("");
-        setIsSearchOpen(false);
-        setIsMobileMenuOpen(false);
-      }
-    },
-    [searchQuery, router],
-  );
 
   const handleLogout = useCallback(async () => {
     try {
@@ -152,10 +137,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-800"
-            : "bg-white dark:bg-gray-900 shadow-md border-b border-gray-100 dark:border-gray-800"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-100"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -189,40 +171,8 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Right Section */}
-            <div className="hidden md:flex items-center gap-4">
-              {/* Search */}
-              {!isAdmin && (
-                <div className="relative">
-                  {isSearchOpen ? (
-                    <form onSubmit={handleSearch} className="relative w-72">
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search movies & series..."
-                        className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                        autoFocus
-                      />
-                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <button
-                        type="button"
-                        onClick={() => setIsSearchOpen(false)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </form>
-                  ) : (
-                    <button
-                      onClick={() => setIsSearchOpen(true)}
-                      className="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-                    >
-                      <Search className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-              )}
-
+            <div className="hidden md:flex items-center">
+  
               {/* Safe Theme Toggle with mounted check */}
               <button
                 onClick={() =>
@@ -291,7 +241,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-3">
                   <Link
                     href="/login"
-                    className="px-5 py-2 text-sm font-medium hover:text-red-600 transition"
+                    className="px-5 py-2 text-sm font-medium hover:text-green-600 transition"
                   >
                     Login
                   </Link>
@@ -327,19 +277,6 @@ export default function Navbar() {
           style={{ top: "64px" }}
         >
           <div className="p-6 flex flex-col h-full overflow-y-auto">
-            {/* Mobile Search */}
-            {!isAdmin && (
-              <form onSubmit={handleSearch} className="mb-6">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search movies & series..."
-                  className="w-full pl-10 pr-4 py-3 bg-gray-100 dark:bg-gray-800 rounded-2xl border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                />
-              </form>
-            )}
-
             {/* Mobile Navigation Links */}
             <div className="flex-1 space-y-2">
               {navLinks.map((link) => (
