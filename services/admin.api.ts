@@ -59,8 +59,15 @@ export const getUsersActivity = async () => {
   return res.data;
 };
 
-export const getSubscriptions = async () => {
+export const getAllSubscriptions = async () => {
   const res = await api.get("/admin/subscriptions");
-  console.log(res);
+  // console.log(res);
+  return res.data.data;
+};
+
+
+export const getSubscriptionsAnalytics = async () => {
+  const res = await api.get("/admin/subscriptions/analytics");
+  // console.log(res.data.data);
   return res.data.data;
 };

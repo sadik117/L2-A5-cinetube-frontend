@@ -31,7 +31,7 @@ const adminNav = [
   { href: "/dashboard/comments", label: "Comments", icon: Users, color: "text-green-500" },
   { href: "/dashboard/users-activity", label: "User Activity", icon: UserCheck, color: "text-indigo-500" },
   { href: "/dashboard/subscriptions", label: "Subscriptions", icon: CreditCard, color: "text-pink-500" },
-  { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3, color: "text-orange-500" },
+ 
 ];
 
 export default function AdminSidebar() {

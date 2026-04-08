@@ -151,7 +151,7 @@ export default function AdminDashboard() {
       title: "View Analytics",
       description: "Detailed platform insights",
       icon: TrendingUp,
-      href: "/dashboard/analytics",
+      href: "/dashboard/users-activity",
       color: "from-purple-500 to-pink-500",
       bgHover: "hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10",
     },

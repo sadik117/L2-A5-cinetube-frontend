@@ -155,3 +155,26 @@ export interface UserActivity {
     watchlist: number;
   };
 }
+
+export interface Subscription {
+  id: string;
+  plan: string;
+  status: "active" | "canceled" | "expired" | "pending";
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
+
+export interface SubscriptionAnalytics {
+  total: number;
+  active: number;
+  canceled: number;
+  activePercentage: number;
+  planDistribution: Array<{ plan: string; count: number; percentage: number }>;
+}
