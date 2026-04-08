@@ -136,7 +136,7 @@ export default function CommentsPage() {
   }
 
   return (
-    <div className="min-h-screen mt-10 ml-0 md:ml-48">
+    <div className="min-h-screen mt-8 ml-0 md:ml-50">
       <div className="relative z-10 p-6 lg:p-8 space-y-6">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">

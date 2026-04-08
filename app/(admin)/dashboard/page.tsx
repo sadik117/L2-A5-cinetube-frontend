@@ -175,7 +175,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen mt-12 ml-0 md:ml-48 ">
+    <div className="min-h-screen mt-8 ml-0 md:ml-50">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>

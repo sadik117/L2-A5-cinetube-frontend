@@ -139,3 +139,19 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
 }
+
+
+export interface UserActivity {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  image?: string;
+  role?: string;
+  _count: {
+    reviews: number;
+    comments: number;
+    watchlist: number;
+  };
+}
