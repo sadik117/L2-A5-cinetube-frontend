@@ -170,10 +170,10 @@ export default function RegisterForm() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    setIsGoogleLoading(true);
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login/google`;
-  };
+  // const handleGoogleLogin = () => {
+  //   setIsGoogleLoading(true);
+  //   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login/google`;
+  // };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -439,15 +439,15 @@ export default function RegisterForm() {
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
         </div>
-        <div className="relative flex justify-center text-sm">
+        {/* <div className="relative flex justify-center text-sm">
           <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">
             Or continue with
           </span>
-        </div>
+        </div> */}
       </div>
 
       {/* Social Login Buttons */}
-      <div>
+      {/* <div>
         <button
           type="button"
           onClick={handleGoogleLogin}
@@ -463,10 +463,10 @@ export default function RegisterForm() {
             Google Sign Up
           </span>
         </button>
-      </div>
+      </div> */}
 
       {/* Login Link */}
-      <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-6">
+      <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-8">
         Already have an account?{" "}
         <Link
           href="/login"

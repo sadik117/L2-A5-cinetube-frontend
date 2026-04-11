@@ -167,21 +167,21 @@ export default function MediaDetailsPage() {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-50 dark:from-gray-900 via-black/60 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-gray-50 dark:from-gray-900 via-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
           </div>
 
           {/* Content Overlay */}
           <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end pb-12">
             <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
               {/* Poster */}
-              <div className="relative w-40 sm:w-48 md:w-64 rounded-xl overflow-hidden shadow-2xl shadow-black/50 animate-fadeInUp">
+              <div className="relative w-40 sm:w-48 md:w-64 mt-12 md:mt-0 rounded-xl overflow-hidden shadow-2xl shadow-black/50 animate-fadeInUp">
                 <Image
                   src={media.coverImage || "/placeholder-image.png"}
                   alt={media.title}
                   width={300}
                   height={450}
-                  className="object-cover"
+                  className="object-cover mt-8 md:mt-0"
                 />
               </div>
 
@@ -192,18 +192,18 @@ export default function MediaDetailsPage() {
                   <h1 className="text-3xl md:text-5xl font-bold">
                     {media.title}
                   </h1>
-                  {media.trending && (
+                  {/* {media.trending && (
                     <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-purple-600 rounded-full text-xs font-semibold flex items-center gap-1">
                       <TrendingUp className="w-3 h-3" />
                       Trending
                     </span>
-                  )}
-                  {media.awardWinning && (
+                  )} */}
+                  {/* {media.awardWinning && (
                     <span className="px-3 py-1 bg-yellow-500 text-black rounded-full text-xs font-semibold flex items-center gap-1">
                       <Award className="w-3 h-3" />
                       Award Winner
                     </span>
-                  )}
+                  )} */}
                 </div>
 
                 {/* Meta Info */}
@@ -213,8 +213,8 @@ export default function MediaDetailsPage() {
                     <span>{media.releaseYear}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    <span>{media.duration}</span>
+                    {/* <Clock className="w-4 h-4" />
+                    <span>{media.duration}</span> */}
                   </div>
                   <div className="flex items-center gap-1">
                     <Film className="w-4 h-4" />

@@ -17,7 +17,7 @@ export type MediaType = "Movie" | "Series";
 export type PriceType = "Free" | "Premium";
 export type Genre = string;
 export interface Media {
-  [x: string]: import("react/jsx-runtime").JSX.Element;
+  // [x: string]: import("react/jsx-runtime").JSX.Element;
   id: string;
   type: MediaType;
   title: string;
@@ -73,6 +73,7 @@ export interface MediaCardProps {
     releaseYear: number;
     genre?: string;
     type?: "Movie" | "Series";
+    priceType: "Free" | "Premium";
     totalRatings?: number;
   };
 }

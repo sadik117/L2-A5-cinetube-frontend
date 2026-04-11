@@ -19,7 +19,7 @@ export default function PremiumGate({ media }: PremiumGateProps) {
   // Safe check
   const isPremiumContent = media?.priceType === "Premium";
 
-  const { subscription, loading } = useSubscription();
+  const { subscription, loading } = useSubscription(true);
 
   if (loading) return null;
 

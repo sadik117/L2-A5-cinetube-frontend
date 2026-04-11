@@ -23,7 +23,7 @@ export default function SubscriptionPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<"monthly" | "yearly">("monthly");
 
-  const { subscription, loading: subLoading } = useSubscription();
+  const { subscription, loading: subLoading } = useSubscription(true); 
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
 

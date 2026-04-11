@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function CreateReview({ mediaId, onSuccess }: any) {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
+  const [isSpoiler, setIsSpoiler] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -20,6 +21,7 @@ export default function CreateReview({ mediaId, onSuccess }: any) {
         content,
         rating,
         tags: [],
+        isSpoiler,
       });
 
       setContent("");
@@ -40,6 +42,20 @@ export default function CreateReview({ mediaId, onSuccess }: any) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
+
+      {/* Spoiler Checkbox */}
+      <div className="flex items-center mt-2">
+        <input
+          type="checkbox"
+          id="spoiler"
+          checked={isSpoiler}
+          onChange={(e) => setIsSpoiler(e.target.checked)}
+          className="mr-2"
+        />
+        <label htmlFor="spoiler" className="text-sm">
+          Contains spoilers
+        </label>
+      </div>
 
       {/* 1-10 Rating */}
       <div className="flex flex-wrap gap-2 mt-2">

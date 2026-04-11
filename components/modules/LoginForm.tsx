@@ -10,16 +10,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useLogin } from "@/hooks/auth.hook";
-import { 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
   LogIn,
   Chrome,
   ArrowRight,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
+import { authClient } from "@/lib/google-auth-client";
 
 type FormData = z.infer<typeof loginSchema>;
 
@@ -37,7 +38,11 @@ export default function LoginForm() {
     },
   });
 
-  const { register, handleSubmit, formState: { errors } } = form;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const onSubmit = (data: FormData) => {
     mutate(data, {
@@ -49,22 +54,39 @@ export default function LoginForm() {
         router.push("/");
       },
       onError: (err: any) => {
-        toast.error(err?.response?.data?.message || "Invalid email or password", {
-          duration: 4000,
-          icon: "❌",
-        });
+        toast.error(
+          err?.response?.data?.message || "Invalid email or password",
+          {
+            duration: 4000,
+            icon: "❌",
+          },
+        );
       },
     });
   };
 
-  const handleGoogleLogin = () => {
-    setIsGoogleLoading(true);
-    // Redirect to Google OAuth
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login/google`;
-  };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     setIsGoogleLoading(true);
+
+  //     await authClient.signIn.social({
+  //       provider: "google",
+  //       callbackURL: "https://cinetube-universe.vercel.app/auth/google-success", 
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("Google login failed");
+  //   } finally {
+  //     setIsGoogleLoading(false);
+  //   }
+  // };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" suppressHydrationWarning>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-5"
+      suppressHydrationWarning
+    >
       {/* Email Field */}
       <div className="space-y-1.5">
         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -75,11 +97,14 @@ export default function LoginForm() {
             <Mail className="h-5 w-5 text-gray-400 group-focus-within:text-red-500 transition-colors" />
           </div>
           <input
+            suppressHydrationWarning
             {...register("email")}
             type="email"
             placeholder="you@example.com"
             className={`block w-full pl-10 pr-3 py-2.5 border ${
-              errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+              errors.email
+                ? "border-red-500"
+                : "border-gray-300 dark:border-gray-600"
             } rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200`}
           />
         </div>
@@ -113,7 +138,9 @@ export default function LoginForm() {
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
             className={`block w-full pl-10 pr-10 py-2.5 border ${
-              errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+              errors.password
+                ? "border-red-500"
+                : "border-gray-300 dark:border-gray-600"
             } rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200`}
           />
           <button
@@ -160,15 +187,15 @@ export default function LoginForm() {
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
         </div>
-        <div className="relative flex justify-center text-sm">
+        {/* <div className="relative flex justify-center text-sm">
           <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">
             Or continue with
           </span>
-        </div>
+        </div> */}
       </div>
 
       {/* Social Login Buttons */}
-      <div>
+      {/* <div>
         <button
           type="button"
           onClick={handleGoogleLogin}
@@ -180,14 +207,19 @@ export default function LoginForm() {
           ) : (
             <Chrome className="w-5 h-5 text-red-500" />
           )}
-          <span className="text-md font-medium text-gray-700 dark:text-gray-300">Google Login</span>
-        </button>       
-      </div>
+          <span className="text-md font-medium text-gray-700 dark:text-gray-300">
+            Google Login
+          </span>
+        </button>
+      </div> */}
 
       {/* Sign Up Link */}
-      <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-6">
+      <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-8">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="text-red-500 hover:text-red-600 font-semibold transition-colors inline-flex items-center gap-1 group">
+        <Link
+          href="/register"
+          className="text-red-500 hover:text-red-600 font-semibold transition-colors inline-flex items-center gap-1 group"
+        >
           Sign up
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>

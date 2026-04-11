@@ -1,32 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
 import { getMySubscription } from "@/services/subscription.api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
-
-export const useSubscription = () => {
+export const useSubscription = (enabled: boolean) => {
   const [subscription, setSubscription] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(enabled);
 
-  const fetchSubscription = async () => {
-  try {
-    const res = await getMySubscription();
+  const fetchSubscription = useCallback(async () => {
+    if (!enabled) return; // block
 
-    // console.log("SUB RESPONSE:", res);
-
-    setSubscription(res);
-  } catch (err) {
-    console.error("sub error:", err);
-    setSubscription(null);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const res = await getMySubscription();
+      setSubscription(res);
+    } catch (err: any) {
+      if (err.response?.status !== 401) {
+        console.error("sub error:", err);
+      }
+      setSubscription(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [enabled]);
 
   useEffect(() => {
-    fetchSubscription();
-  }, []);
+    if (enabled) fetchSubscription(); // only when allowed
+  }, [fetchSubscription, enabled]);
 
   return { subscription, loading, refetch: fetchSubscription };
 };

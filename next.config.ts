@@ -16,18 +16,32 @@ const nextConfig: NextConfig = {
         hostname: "**.ibb.co**", // Matches i.ibb.co, i.ibb.co.com, etc.
       },
       {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com', // this for Google Profile Pictures
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com", // this for Google Profile Pictures
       },
       {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com', // this line for upload posters in cloudinary
+        protocol: "https",
+        hostname: "res.cloudinary.com", // this line for upload posters in cloudinary
       },
       {
-        protocol: 'https',
-        hostname: 'i.pravatar.cc', // this line for upload posters in cloudinary
+        protocol: "https",
+        hostname: "i.pravatar.cc", // this line for upload posters in cloudinary
       },
     ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: "https://cinetube-server-pink.vercel.app/api/v1/:path*",
+      },
+    
+      // {
+      //   source: "/api/auth/:path*",
+      //   destination: "https://cinetube-server-pink.vercel.app/api/auth/:path*",
+      // },
+    ];
   },
 };
 

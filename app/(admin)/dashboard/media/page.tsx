@@ -3,12 +3,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  createMedia,
-  updateMedia,
-  deleteMedia,
-  getAllMedia,
-} from "@/services/admin.api";
+import { createMedia, updateMedia, deleteMedia } from "@/services/admin.api";
 import { toast } from "sonner";
 import {
   Film,
@@ -160,7 +155,7 @@ export default function ManageMediaPage() {
     setEditingMedia(media);
     setFormData({
       ...media,
-      coverImage: media.coverImage ?? null,
+      coverImage: null,
     });
     setShowForm(true);
   };

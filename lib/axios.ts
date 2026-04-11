@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: "/api/v1",
   withCredentials: true,
   timeout: 15000,
 });
@@ -24,12 +24,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Not 401 or already retried → reject immediately
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    // Not a 401 → reject immediately
+    if (error.response?.status !== 401 || originalRequest.url?.includes("/auth/")) {
       return Promise.reject(error);
     }
 
-    // Skip refresh on auth pages to prevent loops
+    // Skip refresh logic on auth pages
     if (typeof window !== "undefined") {
       const path = window.location.pathname;
       if (path === "/login" || path === "/register") {
@@ -37,8 +37,19 @@ api.interceptors.response.use(
       }
     }
 
-    // If a refresh is already in progress, queue this request
-    if (isRefreshing) {
+const skipRefreshRoutes = ["/auth/login", "/auth/register", "/auth/me", "/payment/my-subscription"];
+
+const shouldSkip = skipRefreshRoutes.some((route) =>
+  originalRequest.url?.includes(route)
+);
+
+// Skip refresh logic for auth endpoints
+if (shouldSkip) {
+  return Promise.reject(error);
+}
+
+// If refresh is already in progress, queue this request
+if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
       })
@@ -50,7 +61,6 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      // Refresh token - we don't need to store the response
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
         {},
@@ -61,7 +71,6 @@ api.interceptors.response.use(
       return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
-
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

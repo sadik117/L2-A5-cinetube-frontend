@@ -10,7 +10,11 @@ export const createMedia = async (data: FormData) => {
 };
 
 export const updateMedia = async (id: string, data: FormData) => {
-  return api.patch(`/movie/${id}`, data);
+  return api.patch(`/movie/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const deleteMedia = async (id: string) => {

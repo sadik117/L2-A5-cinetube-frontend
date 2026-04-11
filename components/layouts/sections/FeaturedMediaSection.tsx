@@ -2,7 +2,7 @@
 
 import { MediaRow } from "@/components/layouts/shared/MediaRow";
 
-const API = process.env.NEXT_PUBLIC_FRONTEND_API_URL! || "http://localhost:5000/api/v1";
+const API = process.env.NEXT_PUBLIC_FRONTEND_API_URL! || "https://cinetube-server-pink.vercel.app/api/v1";
 
 type Media = {
   id: string;
@@ -41,7 +41,7 @@ export default async function FeaturedMediaSection() {
   });
 
   return (
-    <section className="py-6 md:py-8 bg-gradient-to-b from-black to-gray-950">
+    <section className="-py-6 bg-gradient-to-b from-black to-gray-950">
       <div className="px-4 md:px-8">
         <h2 className="text-xl md:text-3xl font-bold mb-8 text-white">
           🎬 Browse Categorized Media

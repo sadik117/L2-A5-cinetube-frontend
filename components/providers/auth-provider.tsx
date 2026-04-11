@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// providers/auth-provider.tsx
 "use client";
 
 import {
@@ -19,24 +18,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user on initial mount
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const response = await getMe();
-        if (response.success && response.data) {
-          setUser(response.data);
-        }
-      } catch (error) {
+  const loadUser = async () => {
+    try {
+      const response = await getMe();
+      const userData = response?.data || response;
+      setUser(userData);
+    } catch (error: any) {
+      // 401 = user not logged in → completely normal, just clear user
+      if (error.response?.status === 401) {
+        setUser(null);
+      } else {
         console.error("Failed to load user:", error);
         setUser(null);
-      } finally {
-        setLoading(false);
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadUser();
   }, []);
+
+  const refreshUser = async () => {
+    await loadUser();
+  };
 
   const login = (userData: User) => {
     setUser(userData);
@@ -44,36 +50,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout", {});
-    } catch (error) {
-      console.error("Backend logout failed:", error);
+      await api.post("/auth/logout", {}, { withCredentials: true });
+    } catch (err) {
+      console.log(err);
+      // Ignore errors on logout
     } finally {
-      // clear local state regardless of API success
       setUser(null);
-
-      // Optional: Clear the token from document.cookie (only works if NOT httpOnly)
       document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-
-      // Redirect to login
       window.location.href = "/login";
     }
   };
 
-  const refreshUser = async () => {
-  try {
-    const response = await getMe();
-    const userData = response?.data || response;
-    setUser(userData);
-  } catch (error: any) {
-    console.log(error);
-    // 401 is expected when not logged in
-    setUser(null);
-  }
-};
-
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, logout, refetchUser: refreshUser }}
+      value={{ 
+        user, 
+        loading, 
+        login, 
+        logout, 
+        refetchUser: refreshUser 
+      }}
     >
       {children}
     </AuthContext.Provider>
