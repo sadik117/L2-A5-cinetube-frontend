@@ -1,27 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function GoogleSuccess() {
   const router = useRouter();
+  const params = useSearchParams();
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.user) {
-          router.push("/");
-        } else {
-          router.push("/login");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [router]);
+    const token = params.get("token");
+
+    if (!token) {
+      router.replace("/login");
+      return;
+    }
+
+    // store token manually (temporary fix)
+    localStorage.setItem("accessToken", token);
+
+    router.replace("/");
+  }, [router, params]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-red-50 via-purple-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">

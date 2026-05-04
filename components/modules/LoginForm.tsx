@@ -19,16 +19,32 @@ import {
   Chrome,
   ArrowRight,
   AlertCircle,
+  User,
+  Shield,
 } from "lucide-react";
-import { authClient } from "@/lib/google-auth-client";
 
 type FormData = z.infer<typeof loginSchema>;
+
+// Demo credentials
+const DEMO_CREDENTIALS = {
+  user: {
+    email: "demo@gmail.com",
+    password: "demo123",
+  },
+  admin: {
+    email: "admin@gmail.com",
+    password: "admin123",
+  },
+};
 
 export default function LoginForm() {
   const router = useRouter();
   const { mutate, isPending } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  // const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [demoLoading, setDemoLoading] = useState<"user" | "admin" | null>(
+    null
+  );
 
   const form = useForm<FormData>({
     resolver: zodResolver(loginSchema),
@@ -42,6 +58,7 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = form;
 
   const onSubmit = (data: FormData) => {
@@ -53,33 +70,56 @@ export default function LoginForm() {
         });
         router.push("/");
       },
-      onError: (err: any) => {
+      onError: () => {
         toast.error(
-          err?.response?.data?.message || "Invalid email or password",
+          "Invalid email or password",
           {
             duration: 4000,
             icon: "❌",
-          },
+          }
         );
       },
     });
   };
 
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     setIsGoogleLoading(true);
-
-  //     await authClient.signIn.social({
-  //       provider: "google",
-  //       callbackURL: "https://cinetube-universe.vercel.app/auth/google-success", 
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Google login failed");
-  //   } finally {
-  //     setIsGoogleLoading(false);
-  //   }
-  // };
+  const handleDemoLogin = (role: "user" | "admin") => {
+    setDemoLoading(role);
+    
+    // Simulate a small delay for better UX
+    setTimeout(() => {
+      const credentials = DEMO_CREDENTIALS[role];
+      setValue("email", credentials.email);
+      setValue("password", credentials.password);
+      
+      // Auto submit the form
+      mutate(credentials, {
+        onSuccess: () => {
+          toast.success(
+            role === "admin"
+              ? "Welcome Admin! You have full access to the dashboard."
+              : "Welcome! Explore movies, rate, and review your favorites.",
+            {
+              duration: 4000,
+              icon: role === "admin" ? "👑" : "🎬",
+            }
+          );
+          router.push(role === "admin" ? "/admin/dashboard" : "/");
+        },
+        onError: (err: any) => {
+          toast.error(
+            err?.response?.data?.message || "Demo login failed. Please try again.",
+            {
+              duration: 4000,
+              icon: "❌",
+            }
+          );
+        },
+        onSettled: () => {
+          setDemoLoading(null);
+        },
+      });
+    }, 500);
+  };
 
   return (
     <form
@@ -166,7 +206,7 @@ export default function LoginForm() {
       {/* Login Button */}
       <button
         type="submit"
-        disabled={isPending}
+        disabled={isPending || demoLoading !== null}
         className="w-full bg-linear-to-r from-red-500 to-purple-600 text-white py-2.5 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
       >
         {isPending ? (
@@ -181,37 +221,89 @@ export default function LoginForm() {
           </>
         )}
       </button>
+      
+        
+      {/* Demo Login Section */}
+      <div className="space-y-3">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+          </div>
+          <div className="relative flex justify-center text-xs">
+            <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">
+              Quick Demo Access
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          {/* User Demo Login */}
+          <button
+            type="button"
+            onClick={() => handleDemoLogin("user")}
+            disabled={demoLoading !== null}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {demoLoading === "user" ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <User className="w-4 h-4" />
+                <span>Demo User</span>
+              </>
+            )}
+          </button>
+
+          {/* Admin Demo Login */}
+          <button
+            type="button"
+            onClick={() => handleDemoLogin("admin")}
+            disabled={demoLoading !== null}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {demoLoading === "admin" ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <Shield className="w-4 h-4" />
+                <span>Demo Admin</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
 
       {/* Divider */}
-      <div className="relative my-6">
+      {/* <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
         </div>
-        {/* <div className="relative flex justify-center text-sm">
+        <div className="relative flex justify-center text-sm">
           <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">
             Or continue with
           </span>
-        </div> */}
-      </div>
-
-      {/* Social Login Buttons */}
-      {/* <div>
-        <button
-          type="button"
-          onClick={handleGoogleLogin}
-          disabled={isGoogleLoading}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 disabled:opacity-70"
-        >
-          {isGoogleLoading ? (
-            <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <Chrome className="w-5 h-5 text-red-500" />
-          )}
-          <span className="text-md font-medium text-gray-700 dark:text-gray-300">
-            Google Login
-          </span>
-        </button>
+        </div>
       </div> */}
+
+      {/* Google Login Button
+      <button
+        type="button"
+        onClick={() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login/google`;
+        }}
+        disabled={demoLoading !== null}
+        className="w-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 flex items-center justify-center gap-3 group disabled:opacity-70 disabled:cursor-not-allowed"
+      >
+        <Chrome className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
+        <span>Continue with Google</span>
+      </button> */}
+
 
       {/* Sign Up Link */}
       <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-8">

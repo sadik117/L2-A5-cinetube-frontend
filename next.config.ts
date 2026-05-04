@@ -32,15 +32,16 @@ const nextConfig: NextConfig = {
 
   async rewrites() {
     return [
+      // {
+      //   source: "/api/v1/:path*",
+      //   destination: "https://cinetube-server-pink.vercel.app/api/v1/:path*",
+      // },
+
+      // Default route to localhost for development
       {
         source: "/api/v1/:path*",
-        destination: "https://cinetube-server-pink.vercel.app/api/v1/:path*",
+        destination: "http://localhost:5000/api/v1/:path*",
       },
-    
-      // {
-      //   source: "/api/auth/:path*",
-      //   destination: "https://cinetube-server-pink.vercel.app/api/auth/:path*",
-      // },
     ];
   },
 };
