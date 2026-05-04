@@ -1,17 +1,14 @@
-// components/home/NewsletterSection.tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import { Mail, Send, Check, AlertCircle, Sparkles, Moon, Sun } from "lucide-react";
+import { Mail, Send, Check, Sparkles  } from "lucide-react";
 import { toast } from "sonner";
-import { useTheme } from "next-themes";
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -77,7 +74,7 @@ export default function NewsletterSection() {
             </span>
           </div>
           
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-4xl font-semibold mb-4 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
             Never Miss a New Release
           </h2>
           

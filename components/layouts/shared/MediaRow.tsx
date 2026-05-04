@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Play, Clock, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Star } from "lucide-react";
 
 export const MediaRow = ({ title, items }: any) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -29,7 +29,7 @@ export const MediaRow = ({ title, items }: any) => {
       } else {
         ref.current.scrollBy({ left: cardWidth, behavior: "smooth" });
       }
-    }, 4000); // Auto slide every 4 seconds
+    }, 2000); // Auto slide every 2 seconds
 
     return () => clearInterval(interval);
   }, [autoSlide, hovered]);
