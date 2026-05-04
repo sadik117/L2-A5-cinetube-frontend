@@ -1,5 +1,3 @@
-// components/sections/FeaturedMediaSection.tsx
-
 import { MediaRow } from "@/components/layouts/shared/MediaRow";
 
 const API = process.env.NEXT_PUBLIC_FRONTEND_API_URL! || "https://cinetube-server-pink.vercel.app/api/v1";
