@@ -151,7 +151,7 @@ export default function Navbar() {
                 <span className="text-xl font-bold bg-linear-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
                   CineTube
                 </span>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400 -mt-1">
+                <p className="text-[10px] text-gray-400 -mt-1">
                   Rate & Review
                 </p>
               </div>
