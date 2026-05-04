@@ -210,7 +210,7 @@ export default function Navbar() {
                           priority
                         />
                       ) : (
-                        <div className="w-full h-full bg-linear-to-br from-red-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                        <div className="w-fill h-full bg-linear-to-br from-red-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
                           {user.name?.[0]?.toUpperCase() || "U"}
                         </div>
                       )}
@@ -224,7 +224,7 @@ export default function Navbar() {
                     <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border dark:border-gray-700 py-2 z-50">
                       <div className="px-5 py-2 border-b dark:border-gray-700">
                         <p className="font-semibold">{user.name}</p>
-                        <p className="text-xs text-gray-300">{user.email}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">{user.email}</p>
                       </div>
                       <div className="p-2">
                         <button

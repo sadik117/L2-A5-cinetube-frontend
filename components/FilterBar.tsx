@@ -20,7 +20,7 @@ export default function FilterBar({ params, setParams }: any) {
         onChange={(e) =>
           setParams({ ...params, genre: e.target.value, page: 1 })
         }
-        className="border px-3 py-2 rounded-md bg-gray-800"
+        className="border px-3 py-2 rounded-md dark:bg-gray-800"
       >
         <option value="">All Genre</option>
         <option value="Action">Action</option>
@@ -33,7 +33,7 @@ export default function FilterBar({ params, setParams }: any) {
         onChange={(e) =>
           setParams({ ...params, sort: e.target.value })
         }
-        className="border px-3 py-2 rounded-md bg-gray-800"
+        className="border px-3 py-2 rounded-md dark:bg-gray-800"
       >
         <option value="latest">Latest</option>
         <option value="rating">Top Rated</option>

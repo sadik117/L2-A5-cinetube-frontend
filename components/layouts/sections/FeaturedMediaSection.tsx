@@ -39,13 +39,13 @@ export default async function FeaturedMediaSection() {
   });
 
   return (
-    <section className="-py-6 bg-gradient-to-b from-black to-gray-950">
+    <section className="bg-gradient-to-b from-white to-gray-100 dark:bg-gradient-to-b dark:from-black dark:to-gray-950">
       <div className="px-4 md:px-8">
-        <h2 className="text-xl md:text-3xl font-bold mb-8 text-white">
+        <h2 className="text-xl md:text-3xl font-bold py-4 text-black dark:text-white">
           🎬 Browse Categorized Media
         </h2>
 
-        <div className="space-y-10 ">
+        <div className="space-y-8">
           {Object.entries(grouped).map(([genre, items]) => (
             <MediaRow key={genre} title={genre} items={items} />
           ))}

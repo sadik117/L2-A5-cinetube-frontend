@@ -19,7 +19,6 @@ export default function MoviesPage() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto mt-12">
-      <h1 className="text-2xl font-bold mb-4 justify-center items-center flex">Movies</h1>
 
       <FilterBar params={params} setParams={setParams} />
 
@@ -27,7 +26,7 @@ export default function MoviesPage() {
         <PageLoading></PageLoading>
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {movies.map((item: any) => (
               <MediaCard key={item.id} item={item} />
             ))}

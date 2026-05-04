@@ -1,5 +1,6 @@
 import FeaturedMediaSection from "@/components/layouts/sections/FeaturedMediaSection";
 import HeroSection from "@/components/layouts/sections/HeroSection";
+import NewsletterSection from "@/components/layouts/sections/NewsLetterSection";
 import PricingSection from "@/components/layouts/sections/PricingSection";
 import ReviewsSection from "@/components/layouts/sections/ReviewSection";
 
@@ -18,6 +19,7 @@ export default function Home() {
        <FeaturedMediaSection></FeaturedMediaSection>
        <ReviewsSection></ReviewsSection>
        <PricingSection></PricingSection>
+       <NewsletterSection></NewsletterSection>
     </div>
   );
 }

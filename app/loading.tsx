@@ -101,17 +101,10 @@ export default function Loading({
         <>
           <div className="flex items-center space-x-2">
             <Sparkles className="w-4 h-4 text-yellow-500 animate-pulse" />
-            <p className={`${textSizeClasses[size]} text-gray-600 dark:text-gray-400 font-medium`}>
+            <p className={`${textSizeClasses[size]} text-gray-600 dark:text-gray-400 font-medium mb-2`}>
               {text}
             </p>
             <Heart className="w-4 h-4 text-red-500 animate-pulse" />
-          </div>
-          
-          {/* Loading tips */}
-          <div className="text-center max-w-md animate-fadeIn">
-            <p className="text-xs text-gray-400 dark:text-gray-500">
-              Did you know? CineRate has over 10,000+ movies and series rated by our community!
-            </p>
           </div>
         </>
       )}

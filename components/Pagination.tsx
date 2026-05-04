@@ -15,7 +15,7 @@ export default function Pagination({ meta, setParams }: any) {
 
   return (
     <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
-      
+    
       {/* Prev */}
       <button
         disabled={page === 1}

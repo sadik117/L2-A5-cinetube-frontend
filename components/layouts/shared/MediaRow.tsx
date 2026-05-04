@@ -47,15 +47,15 @@ export const MediaRow = ({ title, items }: any) => {
   };
 
   return (
-    <div className="mb-8">
+    <div className="mb-8 py-2 md:py-4 text-black dark:text-white">
       {/* Header */}
-      <div className="flex items-center justify-between mb-3 px-2">
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
+      <div className="flex items-center justify-between mb-6 px-2">
+        <h3 className="text-lg font-semibold text-black dark:text-white">{title}</h3>
 
         {/* Auto-slide toggle indicator */}
         <button
           onClick={() => setAutoSlide(!autoSlide)}
-          className="text-xs px-2 py-1 rounded-full bg-gray-800 text-gray-400 hover:bg-gray-700 transition"
+          className="text-xs px-2 py-1 rounded-full dark:bg-gray-800 bg-gray-400 hover:bg-gray-600 transition"
         >
           {autoSlide ? "⏸ Auto-slide" : "▶ Auto-slide"}
         </button>
@@ -75,8 +75,6 @@ export const MediaRow = ({ title, items }: any) => {
         {/* Cards Container */}
         <div
           ref={ref}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
           className="flex gap-3 overflow-x-auto scrollbar-hide px-2"
           style={{ scrollBehavior: "smooth" }}
         >
@@ -98,13 +96,6 @@ export const MediaRow = ({ title, items }: any) => {
                     className="object-cover"
                     sizes="140px"
                   />
-
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button className="bg-white/20 backdrop-blur-sm rounded-full p-2 transform scale-90 group-hover/card:scale-100 transition">
-                      <Play className="w-5 h-5 text-white" />
-                    </button>
-                  </div>
 
                   {/* Rating badge */}
                   {item.rating && (
@@ -150,16 +141,6 @@ export const MediaRow = ({ title, items }: any) => {
           <ChevronRight className="w-4 h-4 text-white" />
         </button>
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 };

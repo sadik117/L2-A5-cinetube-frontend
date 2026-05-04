@@ -150,25 +150,6 @@ export default function PricingSection() {
               </span>
             </button>
           </div>
-
-          {/* Theme Toggle Button */}
-          <button
-            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 shadow-sm"
-            aria-label="Toggle theme"
-          >
-            {mounted && resolvedTheme === "dark" ? (
-              <>
-                <Sun className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-medium">Light Mode</span>
-              </>
-            ) : (
-              <>
-                <Moon className="w-4 h-4 text-purple-600" />
-                <span className="text-sm font-medium">Dark Mode</span>
-              </>
-            )}
-          </button>
         </div>
 
         {/* Pricing Cards */}

@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "i.pravatar.cc", // this line for upload posters in cloudinary
       },
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org", // this line for upload posters in cloudinary
+      },
     ],
   },
 
