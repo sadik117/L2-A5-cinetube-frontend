@@ -75,7 +75,7 @@ export default async function FeaturedMediaSection() {
         <div className="text-center mt-8 pt-4">
           <Link
             href="/movies"
-            className="inline-flex items-center gap-2 px-8 py-3 border-2 border-rose-500 dark:border-rose-400 text-rose-600 dark:text-rose-400 rounded-xl font-semibold hover:bg-rose-500 hover:text-white dark:hover:bg-rose-500 dark:hover:text-white transition-all duration-300 group"
+            className="inline-flex items-center gap-2 px-8 py-3 border-2 border-rose-200 dark:border-rose-300 text-rose-500 dark:text-rose-400 rounded-xl font-semibold hover:bg-rose-500 hover:text-white dark:hover:bg-rose-500 dark:hover:text-white transition-all duration-300 group"
           >
             <Film className="w-4 h-4" />
             <span>View All {media.length}+ Movies & Series</span>

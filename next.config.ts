@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "image.tmdb.org", // this line for upload posters in cloudinary
+        hostname: "image.tmdb.org", 
       },
     ],
   },

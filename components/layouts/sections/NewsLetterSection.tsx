@@ -66,7 +66,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-300">
+    <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-950 dark:to-gray-950 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
@@ -87,7 +87,7 @@ export default function NewsletterSection() {
         </div>
 
         {/* Subscription Card */}
-        <div className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+        <div className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700 transition-colors duration-300 suppressHydrationWarning">
           <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 relative">
