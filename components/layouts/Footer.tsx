@@ -58,12 +58,11 @@ export default function Footer() {
       { name: "FAQ", href: "/faq", icon: Clock },
       { name: "Contact Us", href: "/contact", icon: Mail },
       { name: "Privacy Policy", href: "/privacy", icon: Shield },
-      { name: "Terms of Service", href: "/terms", icon: Award },
     ],
     company: [
       { name: "About Us", href: "/about" },
-      { name: "Careers", href: "/careers" },
-      { name: "Press Kit", href: "/press" },
+      { name: "Terms of Service", href: "/terms", icon: Award },
+
     ],
   };
 
@@ -164,11 +163,10 @@ export default function Footer() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 transition-all duration-300 ${
-                        mounted && resolvedTheme === "dark"
+                      className={`p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 transition-all duration-300 ${mounted && resolvedTheme === "dark"
                           ? social.darkColor
                           : social.lightColor
-                      } hover:text-white hover:scale-110 transform`}
+                        } hover:text-white hover:scale-110 transform`}
                       aria-label={social.name}
                     >
                       <Icon className="w-4 h-4" />
@@ -269,11 +267,10 @@ export default function Footer() {
               {streamingPartners.map((partner) => (
                 <div
                   key={partner.name}
-                  className={`px-4 py-2 bg-gradient-to-r ${
-                    mounted && resolvedTheme === "dark"
+                  className={`px-4 py-2 bg-gradient-to-r ${mounted && resolvedTheme === "dark"
                       ? partner.darkColor
                       : partner.color
-                  } rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer group`}
+                    } rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer group`}
                 >
                   <span className="text-white text-sm font-semibold group-hover:tracking-wide transition-all">
                     {partner.name}
@@ -289,7 +286,6 @@ export default function Footer() {
               <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                 <span>© {currentYear} CineTube.</span>
                 <span>All rights reserved.</span>
-                <Heart className="w-3.5 h-3.5 text-red-500 fill-current animate-pulse" />
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
@@ -301,16 +297,17 @@ export default function Footer() {
                 >
                   {mounted && resolvedTheme === "dark" ? (
                     <>
-                      <Sun className="w-3.5 h-3.5 text-yellow-500" />
-                      <span className="text-gray-700 dark:text-gray-300 text-xs">
-                        Light Mode
-                      </span>
-                    </>
-                  ) : (
-                    <>
                       <Moon className="w-3.5 h-3.5 text-purple-600" />
                       <span className="text-gray-700 dark:text-gray-300 text-xs">
                         Dark Mode
+                      </span>
+                    </>
+
+                  ) : (
+                    <>
+                      <Sun className="w-3.5 h-3.5 text-yellow-500" />
+                      <span className="text-gray-700 dark:text-gray-300 text-xs">
+                        Light Mode
                       </span>
                     </>
                   )}
